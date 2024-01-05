@@ -77,8 +77,10 @@
                     @foreach (var ownerSign in ViewBag.OwnerSigns)
                     {
                         <div class="checkbox">
-                            <input class="form-control" type="checkbox" name="ownerSigns" id="ownerSigns" value="@ownerSign.Id" />
-                            <span class="ownerSign">@ownerSign.Name</span>
+                            <label class="ownerSignsLabel">
+                                <input class="form-control" type="checkbox" name="ownerSigns" id="ownerSigns" value="@ownerSign.Id" />
+                                <span class="ownerSign">@ownerSign.Name</span>
+                            </label>
                         </div>
                     }
                 </div>

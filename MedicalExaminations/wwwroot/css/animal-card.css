@@ -100,6 +100,7 @@ input[type="checkbox"] {
 
 .ownerSign {
     font-size: 24px;
+    margin-left: 10px;
 }
 
 select {
@@ -278,6 +279,19 @@ hr {
 }
 
 .checkboxes {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.checkbox {
+    height: 30px;
+    margin: auto 0;
+}
+
+.ownerSignsLabel {
+    width: fit-content;
+    margin: 0;
+    float: none;
     display: flex;
     flex-wrap: wrap;
 }

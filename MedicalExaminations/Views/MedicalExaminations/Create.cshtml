@@ -16,14 +16,9 @@
 
     <div class="row">
         <div class="col-md-4">
-            <form asp-action="Create">
+            <form asp-action="Create" asp-controller="MedicalExaminations">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-                <div class="form-group">
-                    <label asp-for="AnimalId" class="control-label"></label>
-                    <input asp-for="AnimalId" class="form-control" value="@ViewBag.AnimalId" />
-                    <span asp-validation-for="AnimalId" class="text-danger"></span>
-                </div>
+                <select hidden asp-for="AnimalId" class="form-control" value="@ViewBag.AnimalId"></select>
 
                 <div class="form-group">
                     <label asp-for="BehaviourFeatures" class="control-label"></label>
@@ -59,12 +54,6 @@
                     <label asp-for="Injuries" class="control-label"></label>
                     <input asp-for="Injuries" class="form-control" />
                     <span asp-validation-for="Injuries" class="text-danger"></span>
-                </div>
-                <hr />
-                <div class="form-group form-check">
-                    <label class="form-check-label">
-                        <input class="form-check-input" asp-for="EmergencyHelpRequired" /> @Html.DisplayNameFor(model => model.EmergencyHelpRequired)
-                    </label>
                 </div>
                 <hr />
                 <div class="form-group">
@@ -112,8 +101,10 @@
                     <label asp-for="ContractId" class="control-label"></label>
                     <select asp-for="ContractId" class ="form-control" asp-items="ViewBag.ContractId"></select>
                 </div>
-                <hr />
                 <div class="form-group">
+                    <label class="form-check-label check">
+                        <input class="form-check-input" asp-for="EmergencyHelpRequired" /> @Html.DisplayNameFor(model => model.EmergencyHelpRequired)
+                    </label>
                     <input type="submit" value="Создать" class="btn btn-primary" />
                 </div>
             </form>
@@ -122,5 +113,7 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.js"></script>
 }

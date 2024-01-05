@@ -5,7 +5,7 @@ namespace MedicalExaminations.Models
     public class MedicalExamination
     {
         [Key]
-        public int Id { get; set; }
+        public int? Id { get; set; }
         public int AnimalId { get; set; }
         public Animal Animal { get; set; }
 
