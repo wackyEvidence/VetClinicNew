@@ -43,6 +43,9 @@ namespace MedicalExaminations.Models.PermissionManagers
                 case "AnimalShelterVeterinarian":
                     user.PermissionManager = new VetPM();
                     break;
+                case "Admin":
+                    user.PermissionManager = new AdminPM();
+                    break; 
             }
         }
     }
