@@ -1,0 +1,142 @@
+﻿* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.icon {
+    position: absolute;
+    width: 60px;
+    height: 50px;
+}
+
+.page-top-left {
+    top: 0;
+    left: 0;
+    display: block;
+}
+
+body {
+    background-color: #BFCDE0;
+    font-size: 2rem;
+}
+
+.form-group { 
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.header-label {
+    position: absolute;
+    top: -80px;
+    left: 0px;
+    font-size: 3.2rem;
+    font-weight: 500;
+    color: #5D5D81;
+}
+
+#edit-button {
+    position: absolute;
+    top: -83px;
+    right: 80px;
+    cursor: pointer;
+    display: inline-block;
+}
+
+
+#delete-button {
+    position: absolute;
+    top: -80px;
+    right: 10px;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.wrapper {
+    position: relative;
+    background-color: rgba(93, 93, 129, 0.3);
+    width: 86%;
+    margin: calc((100vh - 450px) / 2) auto;
+    padding: 5rem;
+    border-radius: 50px;
+}
+
+form {
+    border-radius: 40px;
+    background: linear-gradient(to right, #dadee7 11.5em, white 0%);
+    overflow: hidden; /* если каким-то образом select окажется слишком большим несмотря на заданный размер*/
+    font-size: inherit;
+}
+
+.text-danger {
+    display: inline-block;
+    font-size: 16px;
+    color: red;
+    position: relative;
+    margin-left: 33px;
+    width: 21em;
+}
+
+input { 
+    position: relative; 
+    margin: auto 0;
+}
+
+input, button, select {
+    font-size: 28px;
+    padding: 0 5px;
+    border: none;
+}
+
+input[type="text"] {
+    width: calc(100% - 13.5em);
+    outline: none;
+}
+
+input[type="date"] {
+    outline: none;
+    margin-right: calc(100% - 13.5em - 240px)
+}
+
+select {
+    width: calc(100% - 13.5em);
+    appearance: none;
+    outline: none;
+}
+
+label {
+    display: inline-block;
+    float: left;
+    width: 10.5em;
+    margin-left: 2rem;
+}
+
+hr {
+    color: rgba(93, 93, 129, 0.3);
+    margin: 0 -2rem;
+}
+
+.btn {
+    position: absolute;
+    right: 5rem;
+    bottom: 0.5rem;
+    padding: 0.5rem;
+    font-size: 2.5rem;
+    background-color: #BFCDE0;
+    color: #5D5D81;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+#submit-button {
+    position: absolute;
+    right: 5rem;
+    bottom: 0.5rem;
+    cursor: pointer;
+    background: none;
+    display: none;
+}
+
+[readonly], .readonly {
+    color: gray;
+}

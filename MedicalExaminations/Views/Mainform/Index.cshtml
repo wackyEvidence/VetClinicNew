@@ -1,0 +1,51 @@
+﻿@{
+    ViewData["Title"] = "Главная форма";
+}
+
+@section style {
+    <link rel="stylesheet" href="~/css/mainform.css" />
+}
+
+<img src="~/img/background.png">
+
+<div class="registries">
+    <h1>Список реестров</h1>
+    <div class="registries-buttons">
+        <a asp-action="Index" asp-controller="Animals" class="js-animals-registry">
+            <input type="button" value="Животные" onclick="return hasViewAnimalsRights()" />
+        </a>
+        <a asp-action="Index" asp-controller="Organizations" class="js-organizations-registry">
+            <input type="button" value="Организации" onclick="return hasViewOrganizationsRights()"/>
+        </a>
+        <a asp-action="Index" asp-controller="Contracts" class="js-contracts-registry">
+            <input type="button" value="Муниципальные контракты" onclick="return hasViewContractsRights()" />
+        </a>
+    </div>
+    <a asp-action="Index" asp-controller="Authorization">
+        <input class="exit" type="button" value="Выход" />
+    </a>
+</div>
+
+<script>
+    const canViewAnimalsRegistry = ('@ViewBag.CanViewAnimalsRegistry' === 'True');
+    const canViewOrganizationsRegistry = ('@ViewBag.CanViewOrganizationsRegistry' === 'True');
+    const canViewContractsRegistry = ('@ViewBag.CanViewContractsRegistry' === 'True');
+
+    function hasViewAnimalsRights() { 
+        if(!canViewAnimalsRegistry)
+            alert("Недостаточно прав для просмотра реестра животных")
+        return canViewAnimalsRegistry;
+    }
+    
+    function hasViewOrganizationsRights() {
+        if (!canViewOrganizationsRegistry)
+            alert("Недостаточно прав для просмотра реестра организаций")
+        return canViewOrganizationsRegistry;
+    }
+
+    function hasViewContractsRights() {
+        if(!canViewContractsRegistry)
+            alert("Недостаточно прав для просмотра реестра контрактов")
+        return canViewContractsRegistry;
+    }
+</script>

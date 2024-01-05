@@ -1,0 +1,68 @@
+* {
+    line-height: 0.9;
+}
+
+body {
+    margin: 0;
+    padding: 1px;
+    background-color: #3B3355;
+    overflow: hidden;
+}
+
+img {
+    position: absolute;
+    z-index: -1;
+    height: 95%;
+    margin: calc((100% - 95%)/2) 0;
+}
+
+.registries {
+    width: 490px;
+    height: 640px;
+    border-radius: 20px;
+    margin: calc((100vh - 640px)/2) auto;
+    padding: 1px;
+    background-color: rgba(93, 93, 129, 0.5);
+}
+
+.registries h1 {
+    width: fit-content;
+    margin: 57px auto 29px auto;
+    color: white;
+    font-weight: 400;
+    font-size: 3rem;
+}
+
+.registries .registries-buttons {
+    width: 400px;
+    height: 269px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: auto;
+}
+
+.registries .registries-buttons input {
+    width: 400px;
+    height: 71px;
+    color: #3B3355;
+    border: none;
+    border-radius: 8px;
+}
+
+.registries .exit {
+    width: 400px;
+    height: 71px;
+    color: #3B3355;
+    border: none;
+    border-radius: 8px;
+    margin-top: 127px;
+    margin-left: 45px;
+}
+
+input {
+    cursor: pointer;
+    font-size: 2rem;
+    font-weight: 500;
+    white-space: pre-line;
+}

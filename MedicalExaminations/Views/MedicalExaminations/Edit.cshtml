@@ -1,0 +1,156 @@
+﻿@model MedicalExaminations.Models.MedicalExamination
+
+@{
+    ViewData["Title"] = "Редактирование медосмотра";
+}
+
+@section style {
+    <link rel="stylesheet" href="~/css/medical-examination-card.css" />
+}
+
+<a href="javascript:history.back()"><img class="icon page-top-left" src="~/img/arrow-back.png" /></a>
+
+<div class="wrapper">
+    <h1 class="header-label">Карточка медосмотра</h1>
+    <img src="~/img/edit.png" alt="edit" id="edit-button" onclick="toggleEditingMode()" />
+    <form id="Delete" asp-action="Delete" method="post" asp-route-id="@Model.Id">
+        <img src="~/img/delete.png" alt="delete" id="delete-button" onclick="return confirmDelete()" />
+    </form>
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Id" />
+                
+                <div class="form-group">
+                <label asp-for="AnimalId" class="control-label"></label>
+                <select asp-for="AnimalId" class="form-control" asp-items="ViewBag.AnimalId"></select>
+                <span asp-validation-for="AnimalId" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="BehaviourFeatures" class="control-label"></label>
+                    <input asp-for="BehaviourFeatures" class="form-control" readonly />
+                    <span asp-validation-for="BehaviourFeatures" class="text-danger"></span>
+                </div>
+                <hr/>
+                <div class="form-group">
+                    <label asp-for="AnimalCondition" class="control-label"></label>
+                    <input asp-for="AnimalCondition" class="form-control" readonly/>
+                    <span asp-validation-for="AnimalCondition" class="text-danger"></span>
+                </div>
+                <hr/>
+                <div class="form-group">
+                    <label asp-for="BodyTemperature" class="control-label"></label>
+                    <input asp-for="BodyTemperature" class="form-control" readonly />
+                    <span asp-validation-for="BodyTemperature" class="text-danger"></span>
+                </div>
+                <hr/>
+                <div class="form-group">
+                    <label asp-for="SkinCovers" class="control-label"></label>
+                    <input asp-for="SkinCovers" class="form-control" readonly />
+                    <span asp-validation-for="SkinCovers" class="text-danger"></span>
+                </div>
+                <hr/>
+                <div class="form-group">
+                    <label asp-for="WoolCondition" class="control-label"></label>
+                    <input asp-for="WoolCondition" class="form-control" readonly />
+                    <span asp-validation-for="WoolCondition" class="text-danger"></span>
+                </div>
+                <hr/>
+                <div class="form-group">
+                    <label asp-for="Injuries" class="control-label"></label>
+                    <input asp-for="Injuries" class="form-control" readonly />
+                    <span asp-validation-for="Injuries" class="text-danger"></span>
+                </div>
+                <hr/>
+                <div class="form-group form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="EmergencyHelpRequired" readonly /> @Html.DisplayNameFor(model => model.EmergencyHelpRequired)
+                    </label>
+                </div>
+                <hr/>
+                <div class="form-group">
+                    <label asp-for="Diagnosis" class="control-label"></label>
+                    <input asp-for="Diagnosis" class="form-control" readonly />
+                    <span asp-validation-for="Diagnosis" class="text-danger"></span>
+                </div>
+                <hr/>
+                <div class="form-group">
+                    <label asp-for="ActionsTaken" class="control-label"></label>
+                    <input asp-for="ActionsTaken" class="form-control" readonly />
+                    <span asp-validation-for="ActionsTaken" class="text-danger"></span>
+                </div>
+                <hr/>
+                <div class="form-group">
+                    <label asp-for="TreatmentPrescribed" class="control-label"></label>
+                    <input asp-for="TreatmentPrescribed" class="form-control" readonly />
+                    <span asp-validation-for="TreatmentPrescribed" class="text-danger"></span>
+                </div>
+                <hr/>
+                <div class="form-group">
+                    <label asp-for="ExaminationDate" class="control-label"></label>
+                    <input asp-for="ExaminationDate" class="form-control" type="date">
+                    <span asp-validation-for="ExaminationDate" class="text-danger"></span>
+                </div>
+                <hr/>
+                <div class="form-group">
+                    <label asp-for="VeterinarianFullName" class="control-label"></label>
+                    <input asp-for="VeterinarianFullName" class="form-control" readonly />
+                    <span asp-validation-for="VeterinarianFullName" class="text-danger"></span>
+                </div>
+                <hr/>
+                <div class="form-group">
+                    <label asp-for="VeterinarianPosition" class="control-label"></label>
+                    <input asp-for="VeterinarianPosition" class="form-control" readonly />
+                    <span asp-validation-for="VeterinarianPosition" class="text-danger"></span>
+                </div>
+                <hr/>
+                <div class="form-group">
+                    <label asp-for="VetClinicId" class="control-label"></label>
+                    <select asp-for="VetClinicId" class="form-control readonly" asp-items="ViewBag.VetClinicId" style="pointer-events: none;"></select>
+                    <span asp-validation-for="VetClinicId" class="text-danger"></span>
+                </div>
+                <hr/>
+                <div class="form-group">
+                    <label asp-for="ContractId" class="control-label"></label>
+                    <select asp-for="ContractId" class="form-control readonly" asp-items="ViewBag.ContractId" style="pointer-events: none;"></select>
+                    <span asp-validation-for="ContractId" class="text-danger"></span>
+                </div>
+                <div class="form-group">                
+                    <button type="submit" id="submit-button" class="btn-primary"><img src="~/img/ok.png" alt="submit" /></button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        let btnEdit = document.querySelector("#edit-button");
+        let btnSubmit = document.querySelector("#submit-button");
+
+        function toggleEditingMode() {
+            const inputElements = document.querySelectorAll("input");
+            for (var i = 0; i < inputElements.length; i++) {
+                inputElements[i].removeAttribute("readonly");
+            }
+
+            const selectElements = document.querySelectorAll("select");
+            for (var i = 0; i < selectElements.length; i++) {
+                selectElements[i].style.pointerEvents = "auto";
+                selectElements[i].classList.remove("readonly");
+            }
+
+            document.getElementById("edit-button").style.display = "none";
+            document.getElementById("submit-button").style.display = "block";
+        }
+
+        function confirmDelete() {
+            return confirm('Вы уверены, что хотите удалить эту карточку?');
+        }
+    </script>
+}

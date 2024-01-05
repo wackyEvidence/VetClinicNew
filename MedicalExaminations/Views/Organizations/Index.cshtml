@@ -1,0 +1,135 @@
+﻿@model IEnumerable<MedicalExaminations.Models.Organization>
+
+@{
+    ViewData["Title"] = "Реестр организаций";
+}
+
+@section style {
+    <link href="~/lib/DataTables/datatables.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/registry.css" />
+}
+
+<nav>
+    <a href="/Mainform/Index"><img src="~/img/home.png" alt="home"></a>
+    <a href="#"><img src="~/img/report.png" alt="report"></a>
+    <div class="registries">
+        <button class="dropbtn">Реестры</button>
+        <div class="dropdown-content">
+            <a asp-action="Index" asp-controller="Animals" onclick="return hasViewAnimalsRights()">Животные</a>
+            <a asp-action="Index" asp-controller="Contracts" onclick="return hasViewContractsRights()">Муниципальные контракты</a>
+        </div>
+    </div>
+    <a href="/Authorization/Index"><img src="~/img/exit.png" alt="exit"></a>
+</nav>
+<h1>Реестр организаций</h1>
+<div class="content">
+    <div class="table">
+        <table id="myTable" class="table table-not-bordered table-hover table-sm">
+            <thead>
+                <tr>
+                    <th hidden>Id</th>
+                    <th>Наименование</th>
+                    <th>ИНН</th>
+                    <th>КПП</th>
+                    <th>Адрес регистрации</th>
+                    <th>Тип организации</th>
+                    <th>ИП/Юридическое лицо</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var organization in Model)
+                {
+                    <tr>
+                        <td hidden>@organization.Id</td>
+                        <td>@organization.Name</td>
+                        <td>@organization.INN</td>
+                        <td>@organization.KPP</td>
+                        <td>@organization.Location?.Name, @organization.Street, @organization.HouseNumber</td>
+                        <td>@organization.OrganizationType?.Name</td>
+                        <td>@organization.OrganizationAttribute?.Name</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="edit">
+        <div class="buttons">
+            <a asp-action="Create"><input type="button" value="Добавить" onclick="return hasEditOrganizationsRights()"/></a>
+            <form id="Delete" asp-action="Delete" method="post" asp-route-id="">
+                <input type="submit" value="Удалить" onclick="return confirmDelete()" />
+            </form>
+            <a asp-action="Export"><input type="button" value="Экспорт" /></a>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/DataTables/datatables.min.js"></script>
+
+    <script>
+        const canEditOrganizationsRegistry = ('@ViewBag.CanEditOrganizationsRegistry' === 'True');
+        const canViewAnimalsRegistry = ('@ViewBag.CanViewAnimalsRegistry' === 'True');
+        const canViewContractsRegistry = ('@ViewBag.CanViewContractsRegistry' === 'True');
+
+        $(document).ready(function () {
+            $('#myTable').DataTable({
+                "scrollY": "450px",
+                "scrollCollapse": true,
+                "paging": true
+            });
+        });
+
+        $("#myTable tbody tr").dblclick(function () {
+            var row = $(this).closest("tr");
+            var id = Number(row.find("td").eq(0).html());
+
+            if (Number.isInteger(id) && id != 0)
+                window.location.href = `/Organizations/Edit/${id}`;
+        });
+
+        $("#myTable tbody tr").click(function () {
+            var row = $(this).closest("tr");
+            $(this).addClass('selected').siblings().removeClass('selected');
+            var id = row.find("td").eq(0).html();
+
+            var $link = $('#Delete');
+            var href = $link.attr('action').split('/');
+            href[3] = id;
+            $link.attr('action', href.join('/'));
+        });
+
+        function confirmDelete() {
+            var id = Number($('.selected').find("td").eq(0).html());
+            if (hasEditOrganizationsRights()) {
+                if (Number.isInteger(id) && id != 0) {
+                    if (confirm('Вы уверены, что хотите удалить?'))
+                        return true;
+                    return false;
+                }
+                return false;
+            }
+            return false;
+        }
+
+        function hasEditOrganizationsRights() {
+            if (!canEditOrganizationsRegistry)
+                alert('Недостаточно прав для изменения реестра');
+            return canEditOrganizationsRegistry;
+        }
+
+        function hasViewAnimalsRights() {
+            if (!canViewAnimalsRegistry)
+                alert("Недостаточно прав для просмотра реестра животных")
+            return canViewAnimalsRegistry;
+        }
+
+        function hasViewContractsRights() {
+            if (!canViewContractsRegistry)
+                alert("Недостаточно прав для просмотра реестра контрактов")
+            return canViewContractsRegistry;
+        }
+    </script>
+}

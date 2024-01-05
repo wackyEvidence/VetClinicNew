@@ -1,0 +1,90 @@
+* {
+    font-family: Inter, sans-serif;
+    line-height: 0.9;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    padding: 1px;
+    background-color: #3B3355;
+    overflow: hidden;
+}
+
+img {
+    position: absolute;
+    z-index: -1;
+    height: 95%;
+    margin: calc((100% - 95%)/2) 0;
+}
+
+.autorization {
+    width: 490px;
+    height: 590px;
+    border-radius: 20px;
+    margin: calc((100vh - 590px)/2) auto;
+    padding: 1px;
+    background-color: rgba(93, 93, 129, 0.5);
+}
+
+.autorization h1 {
+    width: fit-content;
+    margin: 57px auto 29px auto;
+    color: white;
+    font-weight: 400;
+    font-size: 3rem;
+}
+
+.autorization .log-in {
+    width: 400px;
+    height: 373px;
+    margin: auto;
+    padding: 27px 33px;
+}
+
+.autorization .log-in .inputs {
+    height: 292px;
+    display: flex;
+    flex-direction: column;
+}
+
+.autorization .log-in .inputs label {
+    height: 50%;
+    display: flex;
+    flex-direction: column;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 500;
+
+}
+
+.autorization .log-in .inputs label input {
+    width: 361px;
+    height: 32px;
+    padding: 9px 14px;
+    margin-top: 22px;
+    background-color: #5D5D81;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 1rem;
+}
+
+.autorization .log-in .log-in-button {
+    width: 400px;
+    height: 70px;
+    margin: 10px auto;
+    padding: 0;
+    border: none;
+    border-radius: 8px;
+    font-size: 32px;
+    font-weight: 500;
+    color: #3B3355;
+}
+
+button {
+    cursor: pointer;
+}

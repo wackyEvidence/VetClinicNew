@@ -1,0 +1,182 @@
+﻿@model MedicalExaminations.Models.Animal
+
+@{
+    ViewData["Title"] = "Создание карточки животного";
+}
+
+@section style {
+    <link rel="stylesheet" href="~/css/animal-card.css" />
+}
+
+<a href="javascript:history.back()"><img class="icon page-top-left" src="~/img/arrow-back.png" /></a>
+
+<div class="wrapper">
+    <h1 class="header-label">Создание карточки животного</h1>
+
+    <div class="content">
+        <div class="left-column">
+            <div class="slider-container">
+                <div class="slider" id="slider"></div>
+                <button class="prev-button" aria-label="Посмотреть предыдущий слайд">&lt;</button>
+                <button class="next-button" aria-label="Посмотреть следующий слайд">&gt</button>
+            </div>
+        </div>
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="RegistrationNumber" class="control-label"></label>
+                <input asp-for="RegistrationNumber" class="form-control" type="text" />
+                <span asp-validation-for="RegistrationNumber" class="text-danger"></span>
+            </div>
+            <hr />
+            <div class="form-group">
+                <label asp-for="LocationId" class="control-label"></label>
+                <select asp-for="LocationId" class="form-control" asp-items="ViewBag.Locations"></select>
+            </div>
+            <hr />
+            <div class="form-group">
+                <label asp-for="AnimalCategoryId" class="control-label"></label>
+                <select asp-for="AnimalCategoryId" class="form-control" asp-items="ViewBag.AnimalCategories"></select>
+            </div>
+            <hr />
+            <div class="form-group">
+                <label asp-for="Sex" class="control-label"></label>
+                <input asp-for="Sex" class="form-control" type="text" />
+                <span asp-validation-for="Sex" class="text-danger"></span>
+            </div>
+            <hr />
+            <div class="form-group">
+                <label asp-for="BirthYear" class="control-label"></label>
+                <input asp-for="BirthYear" class="form-control" type="text" />
+                <span asp-validation-for="BirthYear" class="text-danger"></span>
+            </div>
+            <hr />
+            <div class="form-group">
+                <label asp-for="ChipNumber" class="control-label"></label>
+                <input asp-for="ChipNumber" class="form-control" type="text" />
+                <span asp-validation-for="ChipNumber" class="text-danger"></span>
+            </div>
+            <hr />
+            <div class="form-group">
+                <label asp-for="Nickname" class="control-label"></label>
+                <input asp-for="Nickname" class="form-control" type="text" />
+                <span asp-validation-for="Nickname" class="text-danger"></span>
+            </div>
+            <hr />
+            <div class="form-group">
+                <label asp-for="DistinguishingMarks" class="control-label"></label>
+                <input asp-for="DistinguishingMarks" class="form-control" type="text" />
+                <span asp-validation-for="DistinguishingMarks" class="text-danger"></span>
+            </div>
+            <hr />
+            <div class="form-group no-flexwrap">
+                <div>
+                    <label asp-for="OwnerSigns" class="control-label"></label>
+                </div>
+                <div class="checkboxes">
+                    @foreach (var ownerSign in ViewBag.OwnerSigns)
+                    {
+                        <div class="checkbox">
+                            <input class="form-control" type="checkbox" name="ownerSigns" id="ownerSigns" value="@ownerSign.Id" />
+                            <span class="ownerSign">@ownerSign.Name</span>
+                        </div>
+                    }
+                </div>
+                <span asp-validation-for="OwnerSigns" class="text-danger"></span>
+            </div>
+            <hr />
+            <div class="form-group">
+                <label asp-for="AnimalPhotos" class="control-label"></label>
+                <input class="form-control" type="file" name="animalPhotos" id="photos" accept=".jpg, .jpeg, .png" multiple />
+                <span asp-validation-for="AnimalPhotos" class="text-danger"></span>
+            </div>
+            <input type="submit" value="Создать" class="btn btn-primary" />
+        </form>
+    </div>
+</div>
+
+@section scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.js"></script>
+
+    <script>
+        const prevButton = document.querySelector('.prev-button');
+        const nextButton = document.querySelector('.next-button');
+        let slider = document.querySelector('.slider');
+        let slides = Array.from(slider.querySelectorAll('img'));
+        let slideCount = slides.length;
+        let slideIndex = 0;
+
+        prevButton.addEventListener('click', showPreviousSlide);
+        nextButton.addEventListener('click', showNextSlide);
+
+        function showPreviousSlide() {
+            slideIndex = (slideIndex - 1 + slideCount) % slideCount;
+            updateSlider();
+        }
+
+        function showNextSlide() {
+            slideIndex = (slideIndex + 1) % slideCount;
+            updateSlider();
+        }
+
+        function updateSlider() {
+            slides.forEach((slide, index) => {
+                if (index === slideIndex) {
+                    slide.style.display = 'block';
+                } 
+                else {
+                    slide.style.display = 'none';
+                }
+            });
+        }
+
+        updateSlider();
+
+
+        function showFile(uploadsFiles) {
+            if (uploadsFiles.target.files.length != 0) {
+                var slider = document.getElementById('slider');
+                while (slider.firstChild)
+                    slider.removeChild(slider.firstChild);
+            }
+            var files = uploadsFiles.target.files;
+            for (var i = 0, file; file = files[i]; i++) {
+                if (!file.type.match('image.*')) continue;
+                var filereader = new FileReader();
+                filereader.onload = (function (theFile) {
+                    return function (uploadsFiles) {
+                        var img = document.createElement('img');
+                        img.src = uploadsFiles.target.result;
+                        slider.appendChild(img);
+                        updateVariables();
+                    };
+                })(file);
+
+                filereader.readAsDataURL(file);
+            }
+        }
+        document.getElementById('photos').addEventListener('change', showFile, false);
+
+        function updateVariables() {
+            slides = Array.from(slider.querySelectorAll('img'));
+            slideCount = slides.length;
+            slideIndex = 0;
+
+            updateSlider();
+        }
+
+        var input = document.getElementById('photos');
+        var selectedFile;
+        input.addEventListener('change', updateImageDisplay);
+        function updateImageDisplay() {
+            if (input.files.length == 0) {
+                input.files = selectedFile;
+            }
+            else {
+                selectedFile = input.files;
+            }
+        }
+    </script>
+}

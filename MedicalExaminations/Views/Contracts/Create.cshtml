@@ -1,0 +1,112 @@
+﻿@model MedicalExaminations.Models.Contract
+
+@{
+    ViewData["Title"] = "Создание карточки контракта";
+}
+
+@section style {
+    <link rel="stylesheet" href="~/css/contract-card.css" />
+}
+
+<a href="javascript:history.back()"><img class="icon page-top-left" src="~/img/arrow-back.png" /></a>
+
+<div class="wrapper">
+    <h1 class="header-label">Создание карточки контракта</h1>
+
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Create" id="form">
+                <fieldset>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Number" class="control-label"></label>
+                        <input asp-for="Number" class="form-control" type="text" />
+                        <span asp-validation-for="Number" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="SigningDate" class="control-label"></label>
+                        <input asp-for="SigningDate" class="form-control" type="date" />
+                        <span asp-validation-for="SigningDate" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ValidUntil" class="control-label"></label>
+                        <input asp-for="ValidUntil" class="form-control" type="date" />
+                        <span asp-validation-for="ValidUntil" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ClientId" class="control-label"></label>
+                        <select asp-for="ClientId" class="form-control" asp-items="ViewBag.Clients"></select>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ExecutorId" class="control-label"></label>
+                        <select asp-for="ExecutorId" class="form-control" asp-items="ViewBag.Executors"></select>
+                    </div>
+                    <input type="submit" value="Создать" class="btn btn-primary" />
+                </fieldset>
+
+                <h3>Список населенных пунктов</h3>
+                <fieldset id="LocationsWithCost">
+                    <div class="locations" id="locations">
+                        
+                    </div>
+                </fieldset>
+            </form>
+                
+            <form id="addLocation">
+                <select id="loc" asp-items="ViewBag.Locations"></select>
+                <input id="cost" type="number" step="any" placeholder="Стоимость" required />
+                <input class="buttonAddLocation" type="submit" value="Добавить"/>
+            </form>
+            <input class="buttoDeleteLocation" type="button" value="Удалить" onclick="deleteLocation()" />
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.js"></script>
+
+    <script>
+        const form = document.getElementById("addLocation");
+        form.addEventListener('submit', addLocation);
+        
+        function addLocation(event) {
+            event.preventDefault();
+            const loc = form.querySelector('#loc');
+            const cost = form.querySelector('#cost');
+
+            var div = document.getElementById('locations');
+            const labels = Array.from(div.querySelectorAll('.labelLocName'));
+            for (var i = 0; i < labels.length; i++) {
+                if (labels[i].textContent == loc.options[loc.selectedIndex].text) {
+                    alert("Такой населенный пункт уже добавлен!");
+                    return false;
+                }
+            }
+            var locationsWithCost = document.getElementById('locations');
+            locationsWithCost.innerHTML += `<div class="form-group">
+                                                <label class="control-label labelLocName">${loc.options[loc.selectedIndex].text}</label>
+                                                <input name="locs" type="number" hidden value="${loc.value}" />
+                                                <input class="form-control cost" name="costs" type="number" readonly value="${cost.value}" />
+                                            </div>`;
+
+            loc.firstElementChild.selected = true;
+            cost.value = '';
+
+        }
+
+        $(document).on('click', "#locations .form-group", function () {
+            $(this).addClass('selected').siblings().removeClass('selected');
+            //var form = document.querySelector("#locations .selected input[name='locs']");
+            //console.log(form.value);
+        });
+
+        function deleteLocation() {
+            const elements = document.getElementsByClassName('selected');
+            while (elements.length > 0) {
+                elements[0].parentNode.removeChild(elements[0]);
+            }
+        }
+    </script>
+}

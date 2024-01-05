@@ -1,0 +1,283 @@
+﻿* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.icon {
+    position: absolute;
+    width: 60px;
+    height: 50px;
+}
+
+.page-top-left { 
+    top: 0;
+    left: 0;
+    display: block;
+}
+
+body {
+    background-color: #BFCDE0;
+    font-size: 2rem;
+}
+
+.header-label {
+    position: absolute;
+    top: -80px;
+    left: 0px;
+    font-size: 3.2rem;
+    font-weight: 500;
+    color: #5D5D81;
+}
+
+#edit-button {
+    position: absolute;
+    top: -80px;
+    right: 10px;
+    cursor: pointer;
+}
+
+.wrapper {
+    position: relative;
+    background-color: rgba(93, 93, 129, 0.3);
+    width: 86%;
+    margin: calc((100vh - 450px) / 2) auto;
+    padding: 5rem 3rem;
+    border-radius: 50px;
+}
+
+form {
+    margin: auto 0;
+    margin-left: 10px;
+    width: 100%;
+    height: fit-content;
+    border-radius: 40px;
+    background: linear-gradient(to right, #dadee7 11.5em, white 0%);
+    overflow: hidden;
+    font-size: inherit;
+    display: inline-block;
+}
+
+.form-group {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.no-flexwrap {
+    flex-wrap: nowrap;
+}
+
+.text-danger {
+    display: inline-block;
+    font-size: 16px;
+    color: red;
+}
+
+.text-danger span {
+    position: relative;
+    margin-left: 33px;
+}
+
+input, button, select {
+    font-size: 28px;
+    padding: 0 5px;
+    border: none;
+}
+
+input[type="text"],
+input[type="file"] {
+    width: calc(100% - 13.5em);
+    outline: none;
+}
+
+input[type="file"] {
+    padding: 0 0 5px 5px;
+}
+
+input[type="checkbox"] {
+    margin-left: 20px;
+}
+
+.ownerSign {
+    font-size: 24px;
+}
+
+select {
+    width: calc(100% - 13.5em);
+    appearance: none;
+    outline: none;
+}
+
+label {
+    display: inline-block;
+    float: left;
+    width: 10.5em;
+    margin-left: 2rem;
+}
+
+hr {
+    color: rgba(93, 93, 129, 0.3);
+    margin: 0 -2rem;
+}
+
+.btn {
+    position: absolute;
+    right: 3.2rem;
+    bottom: 0.5rem;
+
+    padding: 0.5rem;
+    font-size: 2.5rem;
+    background-color: #BFCDE0;
+    color: #5D5D81;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+#submit-button {
+    position: absolute;
+    right: 5rem;
+    bottom: 0.5rem;
+    cursor: pointer;
+    background: none;
+    display: none;
+}
+
+[readonly], .readonly {
+    color: gray;
+}
+
+.page-title {
+    text-align: center;
+}
+
+.slider-container {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    margin: 0 auto 10px auto;
+    overflow: hidden;
+    border-radius: 100%;
+    border: 1px black solid;
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.slider {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.slider img {
+    width: 200px;
+    height:200px;
+    object-fit: cover;
+}
+
+.prev-button,
+.next-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50px;
+    height: 50px;
+    background-color: transparent;
+    border: none;
+    font-size: 24px;
+    color: white;
+}
+
+.prev-button {
+    left: 10px;
+    color: black;
+}
+
+.next-button {
+    right: 10px;
+    color: black;
+}
+
+.left-column {
+    width: 275px;
+    display: inline-block;
+}
+
+.content {
+    display: flex;
+}
+
+.tableDiv {
+    width: 255px;
+    font-size: 26px;
+    margin: 25px auto 0 auto;
+}
+
+.table {
+    width: 100%;
+    background-color: white;
+    text-align: center;
+    border-radius: 0 0 20px 20px;
+    border-collapse: collapse;
+    overflow: hidden;
+}
+
+#plus {
+    width: 35px;
+    height: 35px;
+    border-radius: 100%;
+    margin-left: 5px;
+    display: inline-block;
+}
+
+#plus img {
+    width: 35px;
+    vertical-align: middle;
+    border-radius: 100%;
+}
+
+#plus:hover {
+    background-color: #E0E0E0;
+    box-shadow: 1px 1px 8px 0px rgba(0, 0, 0, 0.5);
+}
+
+.thead {
+    height: 45px;
+    padding-top: 5px;
+    border-bottom: 2px solid #5D5D81;
+    background-color: white;
+    border-radius: 20px 20px 0 0;
+}
+
+.thead span {
+    font-weight: 500;
+    margin-left: 20px;
+    padding-top: 10px;
+}
+
+.table tbody {
+    height: 140px;
+    max-height: 140px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.table tbody td {
+    width: 255px;
+    height: 33px;
+}
+
+.table tbody tr {
+    border-bottom: 2px solid rgba(93, 93, 129, 0.3);
+}
+
+.table tr:last-child {
+    border-bottom: none;
+}
+
+.table tbody tr:hover {
+    background-color: #E0E0E0;
+}
+
+.checkboxes {
+    display: flex;
+    flex-wrap: wrap;
+}

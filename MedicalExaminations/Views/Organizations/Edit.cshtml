@@ -1,0 +1,108 @@
+﻿@model MedicalExaminations.Models.Organization
+
+@{
+    ViewData["Title"] = "ViewAndEdit";
+}
+
+@section style {
+    <link rel="stylesheet" href="~/css/organization-card.css" />
+}
+
+<a href="javascript:history.back()"><img class="icon page-top-left" src="~/img/arrow-back.png" /></a>
+
+<div class="wrapper">
+    <h1 class="header-label">Карточка организации</h1>
+    <img src="~/img/edit.png" alt="edit" id="edit-button" onclick="return toggleEditingMode()" />
+
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Edit" asp-route-id="@Model.Id">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" readonly />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <hr />
+                <div class="form-group">
+                    <label asp-for="INN" class="control-label"></label>
+                    <input asp-for="INN" class="form-control" type="text" readonly />
+                    <span asp-validation-for="INN" class="text-danger"></span>
+                </div>
+                <hr />
+                <div class="form-group">
+                    <label asp-for="KPP" class="control-label"></label>
+                    <input asp-for="KPP" class="form-control" type="text" readonly />
+                    <span asp-validation-for="KPP" class="text-danger"></span>
+                </div>
+                <hr />
+                <div class="form-group">
+                    <label asp-for="LocationId" class="control-label"></label>
+                    <select asp-for="LocationId" class="form-control readonly" asp-items="ViewBag.Locations" style="pointer-events: none;"></select>
+                </div>
+                <hr />
+                <div class="form-group">
+                    <label asp-for="Street" class="control-label"></label>
+                    <input asp-for="Street" class="form-control" readonly />
+                    <span asp-validation-for="Street" class="text-danger"></span>
+                </div>
+                <hr />
+                <div class="form-group">
+                    <label asp-for="HouseNumber" class="control-label"></label>
+                    <input asp-for="HouseNumber" class="form-control" type="text" readonly />
+                    <span asp-validation-for="HouseNumber" class="text-danger"></span>
+                </div>
+                <hr />
+                <div class="form-group">
+                    <label asp-for="OrganizationTypeId" class="control-label"></label>
+                    <select asp-for="OrganizationTypeId" class="form-control readonly" asp-items="ViewBag.OrganizationTypes" style="pointer-events: none;"></select>
+                </div>
+                <hr />
+                <div class="form-group">
+                    <label asp-for="OrganizationAttributeId" class="control-label"></label>
+                    <select asp-for="OrganizationAttributeId" class="form-control readonly" asp-items="ViewBag.OrganizationAttributes" style="pointer-events: none;"></select>
+                </div>
+                <button type="submit" id="submit-button" class="btn-primary"><img src="~/img/ok.png" alt="submit" /></button>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.js"></script>
+
+    <script>
+        const canEditOrganizationsRegistry = ('@ViewBag.CanEditOrganizationsRegistry' === 'True');
+
+        let btnEdit = document.querySelector("#edit-button");
+        let btnSubmit = document.querySelector("#submit-button");
+
+        function toggleEditingMode() {
+            if (hasEditOrganizationsRights()) {
+                const inputElements = document.querySelectorAll("input");
+                for (var i = 0; i < inputElements.length; i++) {
+                    inputElements[i].removeAttribute("readonly");
+                }
+
+                const selectElements = document.querySelectorAll("select");
+                for (var i = 0; i < selectElements.length; i++) {
+                    selectElements[i].style.pointerEvents = "auto";
+                    selectElements[i].classList.remove("readonly");
+                }
+
+                document.getElementById("edit-button").style.display = "none";
+                document.getElementById("submit-button").style.display = "block";
+                return true;
+            }
+            return false;
+        }
+
+        function hasEditOrganizationsRights() {
+            if (!canEditOrganizationsRegistry)
+                alert('Недостаточно прав для изменения реестра');
+            return canEditOrganizationsRegistry;
+        }
+    </script>
+}

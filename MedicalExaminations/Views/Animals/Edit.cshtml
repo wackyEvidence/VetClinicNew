@@ -1,0 +1,234 @@
+﻿@model MedicalExaminations.Models.Animal
+
+@{
+    ViewData["Title"] = "Просмотр карточки животного";
+}
+
+@section style {
+    <link rel="stylesheet" href="~/css/animal-card.css" />
+}
+
+<a href="javascript:history.back()"><img class="icon page-top-left" src="~/img/arrow-back.png" /></a>
+
+<div class="wrapper">
+    <h1 class="header-label">Карточка животного</h1>
+    <img src="~/img/edit.png" alt="edit" id="edit-button" />
+
+    <div class="content">
+        <div class="left-column">
+            <div class="slider-container">
+                <div class="slider" id="slider">
+                    @foreach (var photo in Model.AnimalPhotos)
+                    {
+                        <img src="data:image/png;base64,@Convert.ToBase64String(photo.PhotoData)" />
+                    }
+                </div>
+                <button class="prev-button" aria-label="Посмотреть предыдущий слайд">&lt;</button>
+                <button class="next-button" aria-label="Посмотреть следующий слайд">&gt</button>
+            </div>
+            <div class="tableDiv">
+                <div class="thead">
+                    <span>Медосмотры</span>
+                    <a asp-action="Create" asp-controller="MedicalExaminations" id="plus" asp-route-id="@Model"><img src="~/img/plus.png" alt="plus" /></a>
+                </div>
+                <table id="myTable" class="table">
+                    <thead>
+                        <tr>
+                            <th hidden>Id</th>
+                            <th hidden>Datetime</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.MedicalExaminations != null)
+                        {
+                            @foreach (var medEx in Model.MedicalExaminations)
+                            {
+                                <tr>
+                                    <td hidden>@medEx.Id</td>
+                                    <td>@medEx.ExaminationDate</td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <form asp-action="Edit" asp-route-id="@Model.Id" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="RegistrationNumber" class="control-label"></label>
+                <input asp-for="RegistrationNumber" class="form-control" type="text" readonly />
+                <span asp-validation-for="RegistrationNumber" class="text-danger"></span>
+            </div>
+            <hr />
+            <div class="form-group">
+                <label asp-for="LocationId" class="control-label"></label>
+                <select asp-for="LocationId" class="form-control readonly" asp-items="ViewBag.Locations" style="pointer-events: none;"></select>
+            </div>
+            <hr />
+            <div class="form-group">
+                <label asp-for="AnimalCategoryId" class="control-label"></label>
+                <select asp-for="AnimalCategoryId" class="form-control readonly" asp-items="ViewBag.AnimalCategories" style="pointer-events: none;"></select>
+            </div>
+            <hr />
+            <div class="form-group">
+                <label asp-for="Sex" class="control-label"></label>
+                <input asp-for="Sex" class="form-control" type="text" readonly />
+                <span asp-validation-for="Sex" class="text-danger"></span>
+            </div>
+            <hr />
+            <div class="form-group">
+                <label asp-for="BirthYear" class="control-label"></label>
+                <input asp-for="BirthYear" class="form-control" type="text" readonly />
+                <span asp-validation-for="BirthYear" class="text-danger"></span>
+            </div>
+            <hr />
+            <div class="form-group">
+                <label asp-for="ChipNumber" class="control-label"></label>
+                <input asp-for="ChipNumber" class="form-control" type="text" readonly />
+                <span asp-validation-for="ChipNumber" class="text-danger"></span>
+            </div>
+            <hr />
+            <div class="form-group">
+                <label asp-for="Nickname" class="control-label"></label>
+                <input asp-for="Nickname" class="form-control" type="text" readonly />
+                <span asp-validation-for="Nickname" class="text-danger"></span>
+            </div>
+            <hr />
+            <div class="form-group">
+                <label asp-for="DistinguishingMarks" class="control-label"></label>
+                <input asp-for="DistinguishingMarks" class="form-control" type="text" readonly />
+                <span asp-validation-for="DistinguishingMarks" class="text-danger"></span>
+            </div>
+            <hr />
+            <div class="form-group no-flexwrap">
+                <div>
+                    <label asp-for="OwnerSigns" class="control-label"></label>
+                </div>
+                <div class="checkboxes">
+                    @foreach (var ownerSign in ViewBag.OwnerSigns)
+                    {
+                        <div class="checkbox">
+                            <input class="form-control readonly" type="checkbox" name="OwnerSigns" id="ownerSigns" value="@ownerSign.Id" style="pointer-events: none;" @((Model.OwnerSigns.Contains(ownerSign) ? "checked" : "")) />
+                            <span class="ownerSign" id="ownerSignsName" readonly>@ownerSign.Name</span>
+                        </div>
+                    }
+                </div>
+                <span asp-validation-for="OwnerSigns" class="text-danger"></span>
+            </div>
+            <hr />
+            <div class="form-group">
+                <label asp-for="AnimalPhotos" class="control-label"></label>
+                <input asp-for="AnimalPhotos" class="form-control readonly" type="file" name="animalPhotos" id="photos" accept=".jpg, .jpeg, .png" multiple style="pointer-events: none;" />
+                <span asp-validation-for="AnimalPhotos" class="text-danger"></span>
+            </div>
+            <button type="submit" id="submit-button" class="btn-primary"><img src="~/img/ok.png" alt="submit" /></button>
+        </form>
+    </div>
+</div>
+
+@section scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.js"></script>
+
+    <script>
+        const prevButton = document.querySelector('.prev-button');
+        const nextButton = document.querySelector('.next-button');
+        let slider = document.querySelector('.slider');
+        let slides = Array.from(slider.querySelectorAll('img'));
+        let slideCount = slides.length;
+        let slideIndex = 0;
+
+        prevButton.addEventListener('click', showPreviousSlide);
+        nextButton.addEventListener('click', showNextSlide);
+
+        function showPreviousSlide() {
+            slideIndex = (slideIndex - 1 + slideCount) % slideCount;
+            updateSlider();
+        }
+
+        function showNextSlide() {
+            slideIndex = (slideIndex + 1) % slideCount;
+            updateSlider();
+        }
+
+        function updateSlider() {
+            slides.forEach((slide, index) => {
+                if (index === slideIndex) {
+                    slide.style.display = 'block';
+                } 
+                else {
+                    slide.style.display = 'none';
+                }
+            });
+        }
+
+        updateSlider();
+
+        function showFile(uploadsFiles) {
+            if (uploadsFiles.target.files.length != 0) {
+                var slider = document.getElementById('slider');
+                while (slider.firstChild)
+                    slider.removeChild(slider.firstChild);
+            }
+            var files = uploadsFiles.target.files;
+            for (var i = 0, file; file = files[i]; i++) {
+                if (!file.type.match('image.*')) continue;
+                var filereader = new FileReader();
+                filereader.onload = (function (theFile) {
+                    return function (uploadsFiles) {
+                        var img = document.createElement('img');
+                        img.src = uploadsFiles.target.result;
+                        slider.appendChild(img);
+                        updateVariables();
+                    };
+                })(file);
+
+                filereader.readAsDataURL(file);
+            }
+        }
+        document.getElementById('photos').addEventListener('change', showFile, false);
+
+        function updateVariables() {
+            slides = Array.from(slider.querySelectorAll('img'));
+            slideCount = slides.length;
+            slideIndex = 0;
+
+            updateSlider();
+        }
+
+        var input = document.getElementById('photos');
+        var selectedFile;
+        input.addEventListener('change', updateImageDisplay);
+        function updateImageDisplay() {
+            if (input.files.length == 0) {
+                input.files = selectedFile;
+            }
+            else {
+                selectedFile = input.files;
+            }
+        }
+    </script>
+
+    <script>
+        let btnEdit = document.querySelector("#edit-button");
+        let btnSubmit = document.querySelector("#submit-button");
+
+        btnEdit.addEventListener("click", () => {
+            const inputElements = document.querySelectorAll("input, #ownerSignsName");
+            for (var i = 0; i < inputElements.length; i++) {
+                inputElements[i].removeAttribute("readonly");
+            }
+
+            const selectElements = document.querySelectorAll("select, #photos, #ownerSigns");
+            for (var i = 0; i < selectElements.length; i++) {
+                selectElements[i].style.pointerEvents = "auto";
+                selectElements[i].classList.remove("readonly");
+            }
+
+            document.getElementById("edit-button").style.display = "none";
+            document.getElementById("submit-button").style.display = "block";
+        });
+    </script>
+}

@@ -1,0 +1,126 @@
+﻿@model MedicalExaminations.Models.MedicalExamination
+
+@{
+    ViewData["Title"] = "Создание медосмотра";
+}
+
+@section style {
+    <link rel="stylesheet" href="~/css/medical-examination-card.css" />
+}
+
+<a href="javascript:history.back()"><img class="icon page-top-left" src="~/img/arrow-back.png" /></a>
+
+<div class="wrapper">
+
+    <h1 class="header-label">Создание карточки медосмотра</h1>
+
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="form-group">
+                    <label asp-for="AnimalId" class="control-label"></label>
+                    <input asp-for="AnimalId" class="form-control" value="@ViewBag.AnimalId" />
+                    <span asp-validation-for="AnimalId" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="BehaviourFeatures" class="control-label"></label>
+                    <input asp-for="BehaviourFeatures" class="form-control" />
+                    <span asp-validation-for="BehaviourFeatures" class="text-danger"></span>
+                </div>
+                <hr />
+                <div class="form-group">
+                    <label asp-for="AnimalCondition" class="control-label"></label>
+                    <input asp-for="AnimalCondition" class="form-control" />
+                    <span asp-validation-for="AnimalCondition" class="text-danger"></span>
+                </div>
+                <hr />
+                <div class="form-group">
+                    <label asp-for="BodyTemperature" class="control-label"></label>
+                    <input asp-for="BodyTemperature" class="form-control" />
+                    <span asp-validation-for="BodyTemperature" class="text-danger"></span>
+                </div>
+                <hr />
+                <div class="form-group">
+                    <label asp-for="SkinCovers" class="control-label"></label>
+                    <input asp-for="SkinCovers" class="form-control" />
+                    <span asp-validation-for="SkinCovers" class="text-danger"></span>
+                </div>
+                <hr />
+                <div class="form-group">
+                    <label asp-for="WoolCondition" class="control-label"></label>
+                    <input asp-for="WoolCondition" class="form-control" />
+                    <span asp-validation-for="WoolCondition" class="text-danger"></span>
+                </div>
+                <hr />
+                <div class="form-group">
+                    <label asp-for="Injuries" class="control-label"></label>
+                    <input asp-for="Injuries" class="form-control" />
+                    <span asp-validation-for="Injuries" class="text-danger"></span>
+                </div>
+                <hr />
+                <div class="form-group form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="EmergencyHelpRequired" /> @Html.DisplayNameFor(model => model.EmergencyHelpRequired)
+                    </label>
+                </div>
+                <hr />
+                <div class="form-group">
+                    <label asp-for="Diagnosis" class="control-label"></label>
+                    <input asp-for="Diagnosis" class="form-control" />
+                    <span asp-validation-for="Diagnosis" class="text-danger"></span>
+                </div>
+                <hr />
+                <div class="form-group">
+                    <label asp-for="ActionsTaken" class="control-label"></label>
+                    <input asp-for="ActionsTaken" class="form-control" />
+                    <span asp-validation-for="ActionsTaken" class="text-danger"></span>
+                </div>
+                <hr />
+                <div class="form-group">
+                    <label asp-for="TreatmentPrescribed" class="control-label"></label>
+                    <input asp-for="TreatmentPrescribed" class="form-control" />
+                    <span asp-validation-for="TreatmentPrescribed" class="text-danger"></span>
+                </div>
+                <hr />
+                <div class="form-group">
+                    <label asp-for="ExaminationDate" class="control-label"></label>
+                    <input asp-for="ExaminationDate" class="form-control" type="date" />
+                    <span asp-validation-for="ExaminationDate" class="text-danger"></span>
+                </div>
+                <hr />
+                <div class="form-group">
+                    <label asp-for="VeterinarianFullName" class="control-label"></label>
+                    <input asp-for="VeterinarianFullName" class="form-control" />
+                    <span asp-validation-for="VeterinarianFullName" class="text-danger"></span>
+                </div>
+                <hr />
+                <div class="form-group">
+                    <label asp-for="VeterinarianPosition" class="control-label"></label>
+                    <input asp-for="VeterinarianPosition" class="form-control" />
+                    <span asp-validation-for="VeterinarianPosition" class="text-danger"></span>
+                </div>
+                <hr />
+                <div class="form-group">
+                    <label asp-for="VetClinicId" class="control-label"></label>
+                    <select asp-for="VetClinicId" class ="form-control" asp-items="ViewBag.VetClinicId"></select>
+                </div>
+                <hr />
+                <div class="form-group">
+                    <label asp-for="ContractId" class="control-label"></label>
+                    <select asp-for="ContractId" class ="form-control" asp-items="ViewBag.ContractId"></select>
+                </div>
+                <hr />
+                <div class="form-group">
+                    <input type="submit" value="Создать" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
