@@ -20,10 +20,13 @@ namespace MedicalExaminations.Controllers
         public async Task<IActionResult> Index()
         {
             ViewBag.CanEditAnimalsRegistry = GlobalConfig.CurrentUser.PermissionManager.CanEditAnimalsRegistry;
-            return View(await db.Animals
+            ViewBag.CanViewOrganizationsRegistry = GlobalConfig.CurrentUser.PermissionManager.CanViewOrganizationsRegistry;
+            ViewBag.CanViewContractsRegistry = GlobalConfig.CurrentUser.PermissionManager.CanViewContractsRegistry;
+            return View(db.Animals
                 .Include(a => a.Location)
                 .Include(a => a.AnimalCategory)
-                .ToListAsync());
+                .Where(GlobalConfig.CurrentUser.PermissionManager.AnimalsFilter)
+                .ToList());
         }
 
         public IActionResult Create()

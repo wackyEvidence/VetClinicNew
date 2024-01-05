@@ -18,12 +18,15 @@ namespace MedicalExaminations.Controllers
         public IActionResult Index()
         {
             ViewBag.CanEditOrganizationsRegistry = GlobalConfig.CurrentUser.PermissionManager.CanEditOrganizationsRegistry;
+            ViewBag.CanViewAnimalsRegistry = GlobalConfig.CurrentUser.PermissionManager.CanViewAnimalsRegistry;
+            ViewBag.CanViewContractsRegistry = GlobalConfig.CurrentUser.PermissionManager.CanViewContractsRegistry;
+
             return View(db.Organizations
                 .Include(o => o.OrganizationType)
                 .Include(o => o.OrganizationAttribute)
                 .Include(o => o.Location)
                 .Where(GlobalConfig.CurrentUser.PermissionManager.OrganizationsFilter)
-        .ToList());
+                .ToList());
         }
 
         public IActionResult Create()
