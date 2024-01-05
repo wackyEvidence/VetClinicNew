@@ -1,4 +1,5 @@
-﻿using DocumentFormat.OpenXml.Office2010.Excel;
+﻿using ClosedXML.Excel;
+using DocumentFormat.OpenXml.Office2010.Excel;
 using MedicalExaminations.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -137,6 +138,61 @@ namespace MedicalExaminations.Controllers
                 }
             }
             return NotFound();
+        }
+
+        public IActionResult Export()
+        {
+            using (XLWorkbook workbook = new XLWorkbook())
+            {
+                var worksheet = workbook.Worksheets.Add("Animals");
+                worksheet.Style.Font.FontSize = 14;
+                worksheet.Cell("A1").Value = "Регистрационный номер";
+                worksheet.Cell("B1").Value = "Населённый пункт";
+                worksheet.Cell("C1").Value = "Категория животного";
+                worksheet.Cell("D1").Value = "Пол животного";
+                worksheet.Cell("E1").Value = "Год рождения";
+                worksheet.Cell("F1").Value = "Кличка животного";
+                worksheet.Row(1).Style.Font.Bold = true;
+                worksheet.Row(1).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+                worksheet.Range(1, 1, 1, 6).Style.Border.BottomBorder = XLBorderStyleValues.Medium;
+                worksheet.Range(1, 1, 1, 6).Style.Border.RightBorder = XLBorderStyleValues.Medium;
+                worksheet.Range(1, 1, 1, 6).Style.Border.LeftBorder = XLBorderStyleValues.Medium;
+                worksheet.Range(1, 1, 1, 6).Style.Border.TopBorder = XLBorderStyleValues.Medium;
+
+                var list = db.Animals.OrderBy(x => x.Id)
+                .Include(a => a.Location)
+                .Include(a => a.AnimalCategory)
+                .ToList();
+
+                for (int i = 0; i < list.Count(); i++)
+                {
+                    worksheet.Cell(i + 2, 1).Value = list[i].RegistrationNumber;
+                    worksheet.Cell(i + 2, 2).Value = list[i].Location.Name;
+                    worksheet.Cell(i + 2, 3).Value = list[i].AnimalCategory.Name;
+                    worksheet.Cell(i + 2, 4).Value = list[i].Sex;
+                    worksheet.Cell(i + 2, 5).Value = list[i].BirthYear;
+                    worksheet.Cell(i + 2, 6).Value = list[i].Nickname;
+                    worksheet.Row(i + 2).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+                    worksheet.Range(i + 2, 1, i + 2, 6).Style.Border.BottomBorder = XLBorderStyleValues.Medium;
+                    worksheet.Range(i + 2, 1, i + 2, 6).Style.Border.RightBorder = XLBorderStyleValues.Medium;
+                    worksheet.Range(i + 2, 1, i + 2, 6).Style.Border.LeftBorder = XLBorderStyleValues.Medium;
+                    worksheet.Range(i + 2, 1, i + 2, 6).Style.Border.TopBorder = XLBorderStyleValues.Medium;
+
+                }
+
+                using (var stream = new MemoryStream())
+                {
+                    worksheet.Columns().AdjustToContents();
+                    workbook.SaveAs(stream);
+                    stream.Flush();
+
+                    return new FileContentResult(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+                    {
+                        FileDownloadName = "animals.xlsx"
+                    };
+                }
+
+            }
         }
     }
 }

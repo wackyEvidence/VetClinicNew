@@ -1,4 +1,5 @@
-﻿using DocumentFormat.OpenXml.Office2010.Excel;
+﻿using ClosedXML.Excel;
+using DocumentFormat.OpenXml.Office2010.Excel;
 using MedicalExaminations.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -98,6 +99,60 @@ namespace MedicalExaminations.Controllers
                 }
             }
             return NotFound();
+        }
+
+        public IActionResult Export()
+        {
+            using (XLWorkbook workbook = new XLWorkbook())
+            {
+                var worksheet = workbook.Worksheets.Add("Contracts");
+                worksheet.Style.Font.FontSize = 14;
+                worksheet.Cell("A1").Value = "Номер";
+                worksheet.Cell("B1").Value = "Дата заключения";
+                worksheet.Cell("C1").Value = "Дата действия";
+                worksheet.Cell("D1").Value = "Исполнитель";
+                worksheet.Cell("E1").Value = "Заказчик";
+                worksheet.Row(1).Style.Font.Bold = true;
+                worksheet.Row(1).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+                worksheet.Range(1, 1, 1, 5).Style.Border.BottomBorder = XLBorderStyleValues.Medium;
+                worksheet.Range(1, 1, 1, 5).Style.Border.RightBorder = XLBorderStyleValues.Medium;
+                worksheet.Range(1, 1, 1, 5).Style.Border.LeftBorder = XLBorderStyleValues.Medium;
+                worksheet.Range(1, 1, 1, 5).Style.Border.TopBorder = XLBorderStyleValues.Medium;
+
+                var list = db.Contracts.OrderByDescending(x=>x.SigningDate)
+                .Include(a => a.Client)
+                .Include(a => a.Executor)
+                .ToList();
+
+
+                for (int i = 0; i < list.Count(); i++)
+                {
+                    worksheet.Cell(i + 2, 1).Value = list[i].Number;
+                    worksheet.Cell(i + 2, 2).Value = list[i].SigningDate.ToString();
+                    worksheet.Cell(i + 2, 3).Value = list[i].ValidUntil.ToString();
+                    worksheet.Cell(i + 2, 5).Value = list[i].Client.Name;
+                    worksheet.Cell(i + 2, 4).Value = list[i].Executor.Name;
+                    worksheet.Row(i + 2).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+                    worksheet.Range(i + 2, 1, i + 2, 5).Style.Border.BottomBorder = XLBorderStyleValues.Medium;
+                    worksheet.Range(i + 2, 1, i + 2, 5).Style.Border.RightBorder = XLBorderStyleValues.Medium;
+                    worksheet.Range(i + 2, 1, i + 2, 5).Style.Border.LeftBorder = XLBorderStyleValues.Medium;
+                    worksheet.Range(i + 2, 1, i + 2, 5).Style.Border.TopBorder = XLBorderStyleValues.Medium;
+
+                }
+
+                using (var stream = new MemoryStream())
+                {
+                    worksheet.Columns().AdjustToContents();
+                    workbook.SaveAs(stream);
+                    stream.Flush();
+
+                    return new FileContentResult(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+                    {
+                        FileDownloadName = "contracts.xlsx"
+                    };
+                }
+
+            }
         }
     }
 }

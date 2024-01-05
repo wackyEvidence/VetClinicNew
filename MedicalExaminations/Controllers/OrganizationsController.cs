@@ -99,7 +99,7 @@ namespace MedicalExaminations.Controllers
                 worksheet.Range(1, 1, 1, 6).Style.Border.LeftBorder = XLBorderStyleValues.Medium;
                 worksheet.Range(1, 1, 1, 6).Style.Border.TopBorder = XLBorderStyleValues.Medium;
 
-                var list = db.Organizations
+                var list = db.Organizations.OrderBy(x => x.Id)
                 .Include(o => o.OrganizationType)
                 .Include(o => o.OrganizationAttribute)
                 .Include(o => o.Location)
@@ -124,6 +124,8 @@ namespace MedicalExaminations.Controllers
                 using (var stream = new MemoryStream())
                 {
                     worksheet.Columns().AdjustToContents();
+                    worksheet.Column(2).Width = 20;
+                    worksheet.Column(3).Width = 20;
                     workbook.SaveAs(stream);
                     stream.Flush();
 
