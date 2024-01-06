@@ -71,6 +71,7 @@ form {
     display: inline-block;
     font-size: 16px;
     color: red;
+    width: 21em;
 }
 
 .text-danger span {

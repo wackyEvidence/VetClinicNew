@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel.DataAnnotations;
 
 namespace MedicalExaminations.Models
 {
@@ -73,12 +74,14 @@ namespace MedicalExaminations.Models
         [Required(ErrorMessage = "Необходимо заполнить поле")]
         public int VetClinicId { get; set; }
 
+        [ValidateNever]
         public Organization? VetClinic { get; set; }
 
         [Display(Name = "Муниципальный контракт")]
         [Required(ErrorMessage = "Необходимо заполнить поле")]
         public int ContractId { get; set; }
 
+        [ValidateNever]
         public Contract? Contract { get; set; }
     }
 }

@@ -19,7 +19,11 @@
 body {
     background-color: #BFCDE0;
     font-size: 2rem;
-    overflow : hidden;
+}
+
+.form-group {
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .header-label {
@@ -54,20 +58,18 @@ form {
     font-size: inherit;
 }
 
-.form-group {
-    max-height: 59px;
-}
-
 .text-danger {
     display: inline-block;
     font-size: 16px;
     color: red;
+    position: relative;
+    margin-left: 33px;
+    width: 21em;
 }
 
-.text-danger span {
-    position:relative;
-    top:-15px;
-    margin-left: 33px;
+input {
+    position: relative;
+    margin: auto 0;
 }
 
 input, button, select {
