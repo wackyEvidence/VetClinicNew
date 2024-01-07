@@ -11,16 +11,24 @@
 }
 
 <nav>
-    <a href="/Mainform/Index"><img src="~/img/home.png" alt="home"></a>
-    <a href="#"><img src="~/img/report.png" alt="report"></a>
+    <a href="/Mainform/Index"><img src="~/img/home.png" alt="home" width="37" height="41"></a>
+    <a href="/Reports/Index">
+        <img src="~/img/report.png" alt="report" width="40" height="39">
+        <p>Отчёт</p>
+    </a>
+    <a href="/Logs/Index">
+        <img src="~/img/journal.png" alt="logs" width="48" height="48">
+        <p>Журнал</p>
+    </a>
     <div class="registries">
         <button class="dropbtn">Реестры</button>
         <div class="dropdown-content">
             <a asp-action="Index" asp-controller="Organizations" onclick="return hasViewOrganizationsRights()">Организации</a>
             <a asp-action="Index" asp-controller="Contracts" onclick="return hasViewContractsRights()">Муниципальные контракты</a>
+            <a asp-action="Index" asp-controller="Reports" onclick="return hasViewContractsRights()">Отчёты</a>
         </div>
     </div>
-    <a href="/Authorization/Index"><img src="~/img/exit.png" alt="exit"></a>
+    <a href="/Authorization/Index"><img src="~/img/exit.png" alt="exit" width="43" height="41"></a>
 </nav>
 <h1>Реестр животных</h1>
 <div class="content">
