@@ -171,7 +171,13 @@ h3 {
 
 #LocationsWithCost .form-group {
     border-bottom: 2px solid rgba(93, 93, 129, 0.3);
+
 }
+
+    #LocationsWithCost .form-group .form-control {
+        width: 150px;
+    }
+
 
 #LocationsWithCost [readonly],
 #LocationsWithCost .readonly {
