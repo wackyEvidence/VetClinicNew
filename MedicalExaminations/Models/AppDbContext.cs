@@ -27,5 +27,8 @@ namespace MedicalExaminations.Models
         public DbSet<PermissionManager> PermissionManagers { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
+        public DbSet<UserPosition> UserPositions { get; set; }
+        public DbSet<ActionType> ActionTypes { get; set; }
+        public DbSet<LogEntry> LogEntries { get; set; }
     }
 }
