@@ -1,7 +1,16 @@
-﻿@model IEnumerable<MedicalExaminations.Models.Animal>
+﻿@model IEnumerable<MedicalExaminations.Models.LogEntry>
 
 @{
-    ViewData["Title"] = "Реестр животных";
+    ViewData["Title"] = "Журнал операций";
+
+    var actionTypeConvert = new Dictionary<string, string>()
+    {
+        { "Create", "Создание" }, 
+        { "Update", "Редактирование" }, 
+        { "Delete", "Удаление" },
+        { "Upload file", "Загрузка файла" }, 
+        { "Delete file", "Удаление файла" }
+    }; 
 }
 
 @section style {
@@ -37,25 +46,28 @@
             <thead>
                 <tr>
                     <th hidden>Id</th>
-                    <th>Регистрационный номер</th>
-                    <th>Населённый пункт</th>
-                    <th>Категория животного</th>
-                    <th>Пол животного</th>
-                    <th>Год рождения</th>
-                    <th>Кличка животного</th>
+                    <th>Фамилия</th>
+                    <th>Имя</th>
+                    <th>Отчество</th>
+                    <th>Тип действия</th>
+                    <th>Дата и время</th>
+                    <th>Идентификационный номер<br />экземпляра объекта</th>
+                    <th>Описание экземпляра объекта<br /> после совершения действия</th>
+                    <th>Идентификационный номер<br />загруженного файла</th>
                 </tr>
             </thead>
-            <tbody>
-                @foreach (var animal in Model)
+            <tbody> 
+                @foreach (var logEntry in Model)
                 {
                     <tr>
-                        <td hidden>@animal.Id</td>
-                        <td>@animal.RegistrationNumber</td>
-                        <td>@animal.Location.Name</td>
-                        <td>@animal.AnimalCategory.Name</td>
-                        <td>@animal.Sex</td>
-                        <td>@animal.BirthYear</td>
-                        <td>@animal.Nickname</td>
+                        <td hidden>@logEntry.Id</td>
+                        <td>@logEntry.User.Surname</td>
+                        <td>@logEntry.User.Name</td>
+                        <td>@logEntry.User.Patronymic</td>
+                        <td>@logEntry.ActionType.Name</td>
+                        <td>@logEntry.Timestamp</td>
+                        <td>@logEntry.ObjectId</td>
+                        <td>@logEntry.FileId == null? "-" : logEntry.FileId</td>
                     </tr>
                 }
             </tbody>
@@ -63,7 +75,6 @@
     </div>
     <div class="edit">
         <div class="buttons">
-            <a asp-action="Create"><input type="button" value="Добавить" onclick="return hasEditAnimalsRights()"/></a>
             <form id="Delete" asp-action="Delete" method="post" asp-route-id="">
                 <input type="submit" value="Удалить" onclick="return confirmDelete()" />
             </form>
@@ -78,10 +89,6 @@
     <script src="~/lib/DataTables/datatables.min.js"></script>
 
     <script>
-        const canEditAnimalsRegistry = ('@ViewBag.CanEditAnimalsRegistry' === 'True');
-        const canViewOrganizationsRegistry = ('@ViewBag.CanViewOrganizationsRegistry' === 'True');
-        const canViewContractsRegistry = ('@ViewBag.CanViewContractsRegistry' === 'True');
-
         $(document).ready(function () {
             $('#myTable').DataTable({
                 "scrollY": "450px",
@@ -95,7 +102,7 @@
             var id = Number(row.find("td").eq(0).html());
 
             if (Number.isInteger(id) && id != 0)
-                window.location.href = `/Animals/Edit/${id}`;
+                window.location.href = `/LogEntries/Edit/${id}`;
         });
 
         $("#myTable tbody tr").click(function () {
@@ -111,7 +118,7 @@
 
         function confirmDelete() {
             var id = Number($('.selected').find("td").eq(0).html());
-            if (hasEditAnimalsRights()) {
+            if (hasEditOrganizationsRights()) {
                 if (Number.isInteger(id) && id != 0) {
                     if (confirm('Вы уверены, что хотите удалить?'))
                         return true;
@@ -120,24 +127,6 @@
                 return false;
             }
             return false;
-        }
-
-        function hasEditAnimalsRights() {
-            if (!canEditAnimalsRegistry)
-                alert('Недостаточно прав для изменения реестра');
-            return canEditAnimalsRegistry;
-        }
-
-        function hasViewOrganizationsRights() {
-            if (!canViewOrganizationsRegistry)
-                alert("Недостаточно прав для просмотра реестра организаций")
-            return canViewOrganizationsRegistry;
-        }
-
-        function hasViewContractsRights() {
-            if (!canViewContractsRegistry)
-                alert("Недостаточно прав для просмотра реестра контрактов")
-            return canViewContractsRegistry;
         }
     </script>
 }
