@@ -22,5 +22,9 @@ namespace MedicalExaminations.Models.PermissionManagers
         public override Func<Organization, bool> OrganizationsFilter => (organization => true);
 
         public override Func<Contract, bool> ContractsFilter => (contract => true);
+
+        public override bool CanViewReportsRegistry => true;
+
+        public override bool CanEditReportsRegistry => false;
     }
 }

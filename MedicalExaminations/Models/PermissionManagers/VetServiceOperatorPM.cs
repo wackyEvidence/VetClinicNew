@@ -21,5 +21,9 @@ namespace MedicalExaminations.Models.PermissionManagers
             organization.OrganizationType.Name == "Ветеринарная клиника: государственная";
         });
         public override Func<Contract, bool> ContractsFilter => (contract => true);
+
+        public override bool CanViewReportsRegistry => true;
+
+        public override bool CanEditReportsRegistry => false;
     }
 }

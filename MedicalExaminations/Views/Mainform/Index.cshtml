@@ -20,6 +20,9 @@
         <a asp-action="Index" asp-controller="Contracts" class="js-contracts-registry">
             <input type="button" value="Муниципальные контракты" onclick="return hasViewContractsRights()" />
         </a>
+        <a asp-action="Index" asp-controller="Reports" class="js-reports-registry">
+            <input type="button" value="Отчёты" onclick="return hasViewReportsRights()" />
+        </a>
     </div>
     <a asp-action="Index" asp-controller="Authorization">
         <input class="exit" type="button" value="Выход" />
@@ -30,6 +33,7 @@
     const canViewAnimalsRegistry = ('@ViewBag.CanViewAnimalsRegistry' === 'True');
     const canViewOrganizationsRegistry = ('@ViewBag.CanViewOrganizationsRegistry' === 'True');
     const canViewContractsRegistry = ('@ViewBag.CanViewContractsRegistry' === 'True');
+    const CanViewReportsRegistry = ('@ViewBag.CanViewReportsRegistry' === 'True');
 
     function hasViewAnimalsRights() { 
         if(!canViewAnimalsRegistry)
@@ -47,5 +51,11 @@
         if(!canViewContractsRegistry)
             alert("Недостаточно прав для просмотра реестра контрактов")
         return canViewContractsRegistry;
+    }
+
+    function hasViewReportsRights() {
+        if (!CanViewReportsRegistry)
+            alert("Недостаточно прав для просмотра реестра отчётов")
+        return CanViewReportsRegistry;
     }
 </script>

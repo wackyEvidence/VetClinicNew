@@ -11,5 +11,9 @@
         public override Func<Animal, bool> AnimalsFilter => (animal) => true;
         public override Func<Organization, bool> OrganizationsFilter => (organization) => true;
         public override Func<Contract, bool> ContractsFilter => (contract) => true;
+
+        public override bool CanViewReportsRegistry => true;
+
+        public override bool CanEditReportsRegistry => true;
     }
 }

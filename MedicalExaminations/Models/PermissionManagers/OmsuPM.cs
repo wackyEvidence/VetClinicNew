@@ -24,5 +24,9 @@ namespace MedicalExaminations.Models.PermissionManagers
                     .Contains((int)user.Workplace.LocationId);
         }
         );
+
+        public override bool CanViewReportsRegistry => true;
+
+        public override bool CanEditReportsRegistry => true;
     }
 }

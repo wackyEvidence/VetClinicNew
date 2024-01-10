@@ -10,6 +10,7 @@ namespace MedicalExaminations.Controllers
             ViewBag.CanViewAnimalsRegistry = GlobalConfig.CurrentUser.PermissionManager.CanViewAnimalsRegistry;
             ViewBag.CanViewOrganizationsRegistry = GlobalConfig.CurrentUser.PermissionManager.CanViewOrganizationsRegistry;
             ViewBag.CanViewContractsRegistry = GlobalConfig.CurrentUser.PermissionManager.CanViewContractsRegistry;
+            ViewBag.CanViewReportsRegistry = GlobalConfig.CurrentUser.PermissionManager.CanViewReportsRegistry;
             return View();
         }
     }

@@ -20,5 +20,9 @@ namespace MedicalExaminations.Models.PermissionManagers
         /// Организация, которая соответствует месту работы пользователя.
         /// </summary>
         public override Func<Contract, bool> ContractsFilter => (contract => contract.ExecutorId == user.WorkplaceId);
+
+        public override bool CanViewReportsRegistry => true;
+
+        public override bool CanEditReportsRegistry => false;
     }
 }
