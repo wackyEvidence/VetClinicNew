@@ -49,9 +49,6 @@ body {
 }
 
 h2 {
-    /*position: absolute;
-    left: calc((100% - 500px) / 2);
-    top: -5px;*/
     color: #353556;
     margin: auto;
     margin-bottom: 25px;
@@ -144,10 +141,6 @@ fieldset {
     display: flex;
     flex-wrap: wrap;
     border-bottom: 2px solid rgba(93, 93, 129, 0.5);
-}
-
-.form-group:last-child {
-    border-bottom: none;
 }
 
 .text-danger {

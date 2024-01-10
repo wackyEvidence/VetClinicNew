@@ -72,6 +72,20 @@
     </div>
 </div>
 
+<div class="wrapperCreateReport">
+    <div class="createReport">
+        <h3>Выберите период</h3>
+        <form asp-action="Create">
+            <label><span>Дата начала:</span><input type="date" asp-format="{0:yyyy-MM-dd}" name="startDate" /></label>
+            <label><span>Дата Окончания:</span><input type="date" asp-format="{0:yyyy-MM-dd}" name="endDate" /></label>
+            <div class="buttonsForCreateReport">
+                <button type="submit">ОК</button>
+                <button type="reset">Отмена</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 @section scripts {
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
