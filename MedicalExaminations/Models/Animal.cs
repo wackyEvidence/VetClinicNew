@@ -25,13 +25,13 @@ namespace MedicalExaminations.Models
 
         [Display(Name = "Пол")]
         [Required(ErrorMessage = "Введите пол животного")]
+        [RegularExpression("М|Ж", ErrorMessage = "Введите М или Ж")]
         [StringLength(1)]
-        public char Sex { get; set; }
+        public string Sex { get; set; }
 
         [Display(Name = "Год рождения")]
         [Required(ErrorMessage = "Введите год рождения")]
-        [RegularExpression("\\b\\d{4}\\b", ErrorMessage = "Введите год рождения числом (напр. 2015)")]
-        [StringLength(4, ErrorMessage = "Введите год рождения числом (напр. 2015)")]
+        [RegularExpression("\\b\\d{4}\\b", ErrorMessage = "Введите год рождения числом (напр.2015)")]
         public int BirthYear { get; set; }
 
         [Display(Name = "Номер чипа")]

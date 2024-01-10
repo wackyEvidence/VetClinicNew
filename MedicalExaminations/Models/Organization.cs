@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using Newtonsoft.Json.Serialization;
 using System.ComponentModel.DataAnnotations;
+using System.Configuration;
 
 namespace MedicalExaminations.Models
 {
@@ -15,12 +17,12 @@ namespace MedicalExaminations.Models
 
         [Display(Name = "ИНН")]
         [Required(ErrorMessage = "Введите ИНН организации")]
-        [StringLength(12, ErrorMessage = "ИНН должен содержать не более 12 цифр")]
+        [RegularExpression("\\b\\d{12}\\b", ErrorMessage = "ИНН должен содержать не более 12 цифр")]
         public long INN { get; set; }
 
         [Display(Name = "КПП")]
         [Required(ErrorMessage = "Введите КПП организации")]
-        [StringLength(9, ErrorMessage = "КПП должен содержать не более 9 цифр")]
+        [RegularExpression("\\b\\d{9}\\b", ErrorMessage = "КПП должен содержать не более 9 цифр")]
         public long KPP { get; set; }
 
         [Display(Name = "Населенный пункт")]
