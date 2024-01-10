@@ -16,7 +16,7 @@
 @section style {
     <link href="~/lib/DataTables/datatables.min.css" rel="stylesheet">
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/registry.css" />
+    <link rel="stylesheet" href="~/css/logs-registry.css" />
 }
 
 <nav>
@@ -39,7 +39,8 @@
     </div>
     <a href="/Authorization/Index"><img src="~/img/exit.png" alt="exit" width="43" height="41"></a>
 </nav>
-<h1>Реестр животных</h1>
+
+<h1>Журнал действий пользователей</h1>
 <div class="content">
     <div class="table">
         <table id="myTable" class="table table-not-bordered table-hover table-sm">
@@ -51,9 +52,9 @@
                     <th>Отчество</th>
                     <th>Тип действия</th>
                     <th>Дата и время</th>
-                    <th>Идентификационный номер<br />экземпляра объекта</th>
-                    <th>Описание экземпляра объекта<br /> после совершения действия</th>
-                    <th>Идентификационный номер<br />загруженного файла</th>
+                    <th>Идентификационный<br /> номер<br />экземпляра<br />объекта</th>
+                    <th>Описание экземпляра объекта после совершения действия</th>
+                    <th>Идентификационный <br /> номер<br />загруженного <br /> файла</th>
                 </tr>
             </thead>
             <tbody> 
@@ -64,7 +65,7 @@
                         <td>@logEntry.User.Surname</td>
                         <td>@logEntry.User.Name</td>
                         <td>@logEntry.User.Patronymic</td>
-                        <td>@logEntry.ActionType.Name</td>
+                        <td>@actionTypeConvert[logEntry.ActionType.Name]</td>
                         <td>@logEntry.Timestamp</td>
                         <td>@logEntry.ObjectId</td>
                         <td>@logEntry.FileId == null? "-" : logEntry.FileId</td>
