@@ -1,4 +1,4 @@
-﻿@*@model MedicalExaminations.Models.Organization*@
+﻿@*@model MedicalExaminations.Models.Report*@
 
 @{
     ViewData["Title"] = "Просмотр карточки отчета";
@@ -11,7 +11,7 @@
 <a href="javascript:history.back()"><img class="icon page-top-left" src="~/img/arrow-back.png" /></a>
 
 <div class="wrapper">
-    <h1 class="header-label">2022</h1>
+    <h1 class="header-label"></h1>
     <div class="row">
         <div class="col-md-4">
             <div class="slider-container">
@@ -101,7 +101,7 @@
                         </fieldset>
                         <div class="locCost">
                             <label>Затраты: </label>
-                            <input name="cost" type="number" readonly placeholder="Стоимость" />
+                            <input class="expenses cost" name="cost" type="number" readonly placeholder="Стоимость" />
                         </div>
                     </div>
                 </div>
@@ -123,6 +123,9 @@
     <script>
         const prevButton = document.querySelector('.prev-button');
         const nextButton = document.querySelector('.next-button');
+        const startingDate = ('@ViewBag.startingDate');
+        const endingDate = ('@ViewBag.endingDate');
+        const sum = ('@ViewBag.sum');
         let slider = document.querySelector('.slider');
         let slides = Array.from(slider.querySelectorAll('.slide'));
         let slideCount = slides.length;
@@ -130,6 +133,17 @@
 
         prevButton.addEventListener('click', showPreviousSlide);
         nextButton.addEventListener('click', showNextSlide);
+
+        function fillDate() {
+            var heading = document.querySelector('.header-label');
+            heading.innerHTML = `${ startingDate } - ${ endingDate }`;
+        }
+
+        function fillExpenses() {
+            var expenses = document.querySelector('.locCost input');
+            expenses.setAttribute('value', `${sum}`);
+            console.log(expenses);
+        }
 
         function showPreviousSlide() {
             slideIndex = (slideIndex - 1 + slideCount) % slideCount;
@@ -153,5 +167,7 @@
         }
 
         updateSlider();
+        fillDate();
+        fillExpenses()
     </script>
 }

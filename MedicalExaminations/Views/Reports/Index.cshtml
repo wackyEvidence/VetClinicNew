@@ -1,4 +1,4 @@
-﻿@model IEnumerable<MedicalExaminations.Models.Animal>
+﻿@model IEnumerable<MedicalExaminations.Models.Report>
 
 @{
     ViewData["Title"] = "Реестр отчетов";
@@ -8,6 +8,7 @@
     <link href="~/lib/DataTables/datatables.min.css" rel="stylesheet">
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/registry.css" />
+    <link rel="stylesheet" href="~/css/createReport.css" />
 }
 
 <nav>
@@ -63,7 +64,7 @@
     </div>
     <div class="edit">
         <div class="buttons">
-            <a asp-action="Create"><input type="button" value="Добавить" onclick="return hasEditAnimalsRights()" /></a>
+            <a><input type="button" value="Добавить" onclick="return hasEditReportsRights()" /></a>
             <form id="Delete" asp-action="Delete" method="post" asp-route-id="">
                 <input type="submit" value="Удалить" onclick="return confirmDelete()" />
             </form>
@@ -76,11 +77,11 @@
     <div class="createReport">
         <h3>Выберите период</h3>
         <form asp-action="Create">
-            <label><span>Дата начала:</span><input type="date" asp-format="{0:yyyy-MM-dd}" name="startDate" /></label>
-            <label><span>Дата Окончания:</span><input type="date" asp-format="{0:yyyy-MM-dd}" name="endDate" /></label>
+            <label><span>Дата начала:</span><input type="date" asp-format="{0:yyyy-MM-dd}" name="dateStart" /></label>
+            <label><span>Дата окончания:</span><input type="date" asp-format="{0:yyyy-MM-dd}" name="dateEnd" /></label>
             <div class="buttonsForCreateReport">
-                <button type="submit">ОК</button>
-                <button type="reset">Отмена</button>
+                <button asp-action="Details" type="submit">ОК</button>
+                <button class="cancel" type="reset">Отмена</button>
             </div>
         </form>
     </div>
@@ -95,6 +96,7 @@
         const canViewAnimalsRegistry = ('@ViewBag.CanViewAnimalsRegistry' === 'True');
         const canViewOrganizationsRegistry = ('@ViewBag.CanViewOrganizationsRegistry' === 'True');
         const canViewContractsRegistry = ('@ViewBag.CanViewContractsRegistry' === 'True');
+        const canEditReportsRegistry = ('@ViewBag.canEditReportsRegistry' === 'True');
 
         $(document).ready(function () {
             $('#myTable').DataTable({
@@ -121,6 +123,11 @@
             var href = $link.attr('action').split('/');
             href[3] = id;
             $link.attr('action', href.join('/'));
+        });
+
+        document.querySelector('.cancel').addEventListener('click', function (e) {
+            var div = document.querySelector('.wrapperCreateReport');
+            div.style.display = 'none';
         });
 
         function confirmDelete() {
@@ -152,6 +159,15 @@
             if (!canViewContractsRegistry)
                 alert("Недостаточно прав для просмотра реестра контрактов")
             return canViewContractsRegistry;
+        }
+
+        function hasEditReportsRights() {
+            if (!canEditReportsRegistry) {
+                alert('Недостаточно прав для изменения реестра');
+                return false;
+            }
+            var div = document.querySelector('.wrapperCreateReport');
+            div.style.display = 'block';
         }
     </script>
 }

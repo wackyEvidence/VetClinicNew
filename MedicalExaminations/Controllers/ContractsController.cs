@@ -18,7 +18,7 @@ namespace MedicalExaminations.Controllers
 
         public async Task<IActionResult> Index()
         {
-            ViewBag.CanEditContractsRegistry = GlobalConfig.CurrentUser.PermissionManager.CanEditOrganizationsRegistry;
+            ViewBag.CanEditContractsRegistry = GlobalConfig.CurrentUser.PermissionManager.CanEditContractsRegistry;
             ViewBag.CanViewAnimalsRegistry = GlobalConfig.CurrentUser.PermissionManager.CanViewAnimalsRegistry;
             ViewBag.CanViewOrganizationsRegistry = GlobalConfig.CurrentUser.PermissionManager.CanViewOrganizationsRegistry;
 
