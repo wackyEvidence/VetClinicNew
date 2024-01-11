@@ -21,11 +21,41 @@ namespace MedicalExaminations.Controllers
             ViewBag.CanViewAnimalsRegistry = GlobalConfig.CurrentUser.PermissionManager.CanViewAnimalsRegistry;
             ViewBag.CanViewOrganizationsRegistry = GlobalConfig.CurrentUser.PermissionManager.CanViewOrganizationsRegistry;
             ViewBag.CanViewContractsRegistry = GlobalConfig.CurrentUser.PermissionManager.CanViewContractsRegistry;
+            ViewBag.CanEditReportsRegistry = GlobalConfig.CurrentUser.PermissionManager.CanEditReportsRegistry;
             return View();
         }
 
-        public ActionResult Details()
+        public ActionResult Details(DateOnly dateStart, DateOnly dateEnd)
         {
+            Report report = new Report();
+            report.StartingDate = dateStart;
+            report.EndingDate = dateEnd;
+            ViewBag.startingDate = report.StartingDate;
+            ViewBag.endingDate = report.EndingDate; 
+
+            var listContracts = db.Contracts
+                .Include(a => a.ContractLocations)
+                .Include(a => a.MedicalExaminations)
+                .ToList();
+            var listLocations = db.Locations.ToList();
+            double sum = 0;
+            foreach (var location in listLocations)
+            {
+                foreach (var contract in listContracts)
+                {
+                    if (contract.ContractLocations.Count != 0 && contract.MedicalExaminations.Count!=0)
+                    {
+                        foreach (var locationId in contract.ContractLocations)
+                        {
+                            if (locationId.LocationId == location.Id && location.Name == "Тюмень")
+                            {
+                                sum = sum + locationId.ExaminationCost;
+                            }
+                        }
+                    }
+                }
+            }
+            ViewBag.sum = sum;  
             return View();
         }
 

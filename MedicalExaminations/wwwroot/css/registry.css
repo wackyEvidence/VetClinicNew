@@ -151,3 +151,31 @@ input, img {
 .selected {
     background-color: gray;
 }
+
+.wrapperCreateReport {
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    z-index: 2;
+    background-color: rgba(0, 0, 0, 0.5);
+    top: 0;
+    left: 0;
+    display:none;
+}
+
+.wrapperCreateReport .createReport {
+    width: 500px;
+    height: 300px;
+    background-color: white;
+    border-radius: 25px;
+    margin: calc((100vh - 302px) / 2) auto;
+    padding: 1px;
+}
+
+.wrapperCreateReport .createReport h3 {
+    position: relative;
+    font-size: 36px;
+    margin: auto;
+    margin-top: 12px;
+    width: fit-content;
+}
