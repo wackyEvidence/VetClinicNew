@@ -4,16 +4,23 @@ using MedicalExaminations.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using MedicalExaminations.Logging;
 
 namespace MedicalExaminations.Controllers
 {
     public class ContractsController : Controller
     {
         AppDbContext db;
+        private readonly ActionType createAction;
+        private readonly ActionType updateAction;
+        private readonly ActionType deleteAction;
 
         public ContractsController(AppDbContext context)
         {
             db = context;
+            createAction = db.ActionTypes.Where(at => at.Name == "Create").First();
+            updateAction = db.ActionTypes.Where(at => at.Name == "Update").First();
+            deleteAction = db.ActionTypes.Where(at => at.Name == "Delete").First();
         }
 
         public async Task<IActionResult> Index()
@@ -51,6 +58,7 @@ namespace MedicalExaminations.Controllers
                 ContractLocations.Add(contractLocation);
             }
             contract.ContractLocations = ContractLocations;
+            Logger.GetInstance().Log(db, createAction, contract.Id, contract.ToJson());
             await db.SaveChangesAsync();
             return RedirectToAction("Index");
         }
@@ -85,6 +93,7 @@ namespace MedicalExaminations.Controllers
             }
             contractUpdate.ContractLocations = ContractLocations;
             db.Contracts.Update(contractUpdate);
+            Logger.GetInstance().Log(db, updateAction, contract.Id, contract.ToJson());
             await db.SaveChangesAsync();
             return RedirectToAction("Index");
         }
@@ -98,6 +107,7 @@ namespace MedicalExaminations.Controllers
                 if (contract != null)
                 {
                     db.Contracts.Remove(contract);
+                    Logger.GetInstance().Log(db, deleteAction, contract.Id);
                     await db.SaveChangesAsync();
                     return RedirectToAction("Index");
                 }
@@ -134,8 +144,8 @@ namespace MedicalExaminations.Controllers
                     worksheet.Cell(i + 2, 1).Value = list[i].Number;
                     worksheet.Cell(i + 2, 2).Value = list[i].SigningDate.ToString();
                     worksheet.Cell(i + 2, 3).Value = list[i].ValidUntil.ToString();
-                    worksheet.Cell(i + 2, 5).Value = list[i].Client.Name;
                     worksheet.Cell(i + 2, 4).Value = list[i].Executor.Name;
+                    worksheet.Cell(i + 2, 5).Value = list[i].Client.Name;
                     worksheet.Row(i + 2).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
                     worksheet.Range(i + 2, 1, i + 2, 5).Style.Border.BottomBorder = XLBorderStyleValues.Medium;
                     worksheet.Range(i + 2, 1, i + 2, 5).Style.Border.RightBorder = XLBorderStyleValues.Medium;

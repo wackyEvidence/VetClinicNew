@@ -1,0 +1,120 @@
+﻿@model MedicalExaminations.Models.LogEntry
+
+@{
+    ViewData["Title"] = "Подробное описание операции";
+}
+
+@section style {
+    <link rel="stylesheet" href="~/css/log-entry.css" />
+}
+
+<a href="javascript:history.back()"><img class="icon page-top-left" src="~/img/arrow-back.png" /></a>
+
+<div class="wrapper">
+    <h1 class="header-label">Подробности операции</h1>
+    
+    <div class="row">
+        <div class="col-md-4">
+            <h2 class="category-label">Информация об операции</h2>
+            <form>
+                <input type="hidden" asp-for="Id" />
+
+                <div class="form-group">
+                    <label asp-for="ActionTypeId"  class="control-label">Тип действия</label>
+                    <input asp-for="ActionType.Display" class="form-control readonly" style="pointer-events: none;"/></input>
+                </div>
+                <hr />
+                <div class="form-group">
+                    <label asp-for="Timestamp" class="control-label"></label>
+                    <input asp-for="Timestamp" class="form-control" readonly />
+                </div>
+                <hr />
+                
+                <div class="form-group">
+                    <label asp-for="ObjectId" class="control-label"></label>
+                    <input asp-for="ObjectId" class="form-control" readonly />
+                </div>
+                <hr />
+
+                <div class="form-group">
+                    <label asp-for="ObjectAttributes" class="control-label"></label>
+                    <textarea asp-for="ObjectAttributes" class="form-control" readonly> </textarea>
+                </div>
+                <hr />
+
+                <div class="form-group">
+                    <label asp-for="FileId" class="control-label"></label>
+                    <input asp-for="FileIdDisplay" class="form-control" readonly />
+                </div>
+            </form>
+
+            <h2 class="category-label">Информация о пользователе</h2>
+            <form>
+                <div class="form-group">
+                    <label asp-for="User.Login" class="control-label"></label>
+                    <input asp-for="User.Login" class="form-control" readonly />
+                </div>
+                <hr />
+
+                <div class="form-group">
+                    <label asp-for="User.Surname" class="control-label"></label>
+                    <input asp-for="User.Surname" class="form-control" readonly />
+                </div>
+                <hr />
+
+                <div class="form-group">
+                    <label asp-for="User.Name" class="control-label"></label>
+                    <input asp-for="User.Name" class="form-control" readonly />
+                </div>
+                <hr />
+
+                <div class="form-group">
+                    <label asp-for="User.Patronymic" class="control-label"></label>
+                    <input asp-for="User.Patronymic" class="form-control" readonly />
+                </div>
+                <hr />
+
+                <div class="form-group">
+                    <label asp-for="User.PersonalPhone" class="control-label"></label>
+                    <input asp-for="User.PersonalPhone" class="form-control" readonly />
+                </div>
+                <hr />
+
+                <div class="form-group">
+                    <label asp-for="User.PersonalEmail" class="control-label"></label>
+                    <input asp-for="User.PersonalEmail" class="form-control" readonly />
+                </div>
+                <hr />
+
+                <div class="form-group">
+                    <label class="control-label">Организация</label>
+                    <input asp-for="User.Workplace.Name" class="form-control" readonly />
+                </div>
+                <hr />
+
+                <div class="form-group">
+                    <label asp-for="User.UnitName" class="control-label"></label>
+                    <input asp-for="User.UnitName" class="form-control" readonly />
+                </div>
+                <hr />
+
+                <div class="form-group">
+                    <label class="control-label">Должность</label>
+                    <input asp-for="User.Position.Name" class="form-control" readonly />
+                </div>
+                <hr />
+
+                <div class="form-group">
+                    <label asp-for="User.WorkPhone" class="control-label"></label>
+                    <input asp-for="User.WorkPhone" class="form-control" readonly />
+                </div>
+                <hr />
+
+                <div class="form-group">
+                    <label asp-for="User.WorkEmail" class="control-label"></label>
+                    <input asp-for="User.WorkEmail" class="form-control" readonly />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

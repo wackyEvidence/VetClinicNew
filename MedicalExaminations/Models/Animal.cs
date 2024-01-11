@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace MedicalExaminations.Models
 {
@@ -16,11 +18,13 @@ namespace MedicalExaminations.Models
         [Display(Name = "Населённый пункт")]
         [Required(ErrorMessage = "Выберите населенный пункт")]
         public int LocationId { get; set; }
+        [JsonIgnore]
         public Location Location { get; set; } = null!;
 
         [Display(Name = "Категория")]
         [Required(ErrorMessage = "Выберите категорию животного")]
         public int AnimalCategoryId { get; set; }
+        [JsonIgnore]
         public AnimalCategory AnimalCategory { get; set; } = null!;
 
         [Display(Name = "Пол")]
@@ -56,6 +60,17 @@ namespace MedicalExaminations.Models
 
         [Display(Name = "Фотографии")]
         [ValidateNever]
+        [JsonIgnore]
         public List<AnimalPhoto>? AnimalPhotos { get; set; }
+
+        public string ToJson()
+        {
+            var options = new JsonSerializerOptions
+            {
+                WriteIndented = true
+            };
+
+            return JsonSerializer.Serialize(this, options);
+        }
     }
 }

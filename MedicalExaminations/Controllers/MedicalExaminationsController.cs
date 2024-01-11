@@ -6,16 +6,23 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MedicalExaminations.Models;
+using MedicalExaminations.Logging;
 
 namespace MedicalExaminations.Controllers
 {
     public class MedicalExaminationsController : Controller
     {
         private readonly AppDbContext db;
+        private readonly ActionType createAction;
+        private readonly ActionType updateAction;
+        private readonly ActionType deleteAction;
 
         public MedicalExaminationsController(AppDbContext context)
         {
             db = context;
+            createAction = db.ActionTypes.Where(at => at.Name == "Create").First();
+            updateAction = db.ActionTypes.Where(at => at.Name == "Update").First();
+            deleteAction = db.ActionTypes.Where(at => at.Name == "Delete").First();
         }
 
         public IActionResult Create(int AnimalId)
@@ -32,6 +39,7 @@ namespace MedicalExaminations.Controllers
         {
             medicalExamination.Id = null;
             db.MedicalExaminations.Add(medicalExamination);
+            Logger.GetInstance().Log(db, createAction, (int)medicalExamination.Id, medicalExamination.ToJson());
             await db.SaveChangesAsync();
             return RedirectToAction("Edit", "Animals", new { id = medicalExamination.AnimalId });
         }
@@ -54,6 +62,7 @@ namespace MedicalExaminations.Controllers
         public async Task<IActionResult> Edit(MedicalExamination medicalExamination)
         {
             db.MedicalExaminations.Update(medicalExamination);
+            Logger.GetInstance().Log(db, updateAction, (int)medicalExamination.Id, medicalExamination.ToJson());
             await db.SaveChangesAsync();
             return RedirectToAction("Edit", "Animals", new { id = medicalExamination.AnimalId });
         }
@@ -67,6 +76,7 @@ namespace MedicalExaminations.Controllers
                 if (medicalExamination != null)
                 {
                     db.MedicalExaminations.Remove(medicalExamination);
+                    Logger.GetInstance().Log(db, deleteAction, (int)medicalExamination.Id);
                     await db.SaveChangesAsync();
                     return RedirectToAction("Index", "Animals");
                 }

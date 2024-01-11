@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace MedicalExaminations.Models
 {
@@ -8,6 +10,7 @@ namespace MedicalExaminations.Models
         [Key]
         public int? Id { get; set; }
         public int AnimalId { get; set; }
+        [JsonIgnore]
         public Animal Animal { get; set; }
 
         [Display(Name = "Особенности поведения")]
@@ -75,6 +78,7 @@ namespace MedicalExaminations.Models
         public int VetClinicId { get; set; }
 
         [ValidateNever]
+        [JsonIgnore]
         public Organization? VetClinic { get; set; }
 
         [Display(Name = "Муниципальный контракт")]
@@ -82,6 +86,17 @@ namespace MedicalExaminations.Models
         public int ContractId { get; set; }
 
         [ValidateNever]
+        [JsonIgnore]
         public Contract? Contract { get; set; }
+
+        public string ToJson()
+        {
+            var options = new JsonSerializerOptions
+            {
+                WriteIndented = true
+            };
+
+            return JsonSerializer.Serialize(this, options);
+        }
     }
 }

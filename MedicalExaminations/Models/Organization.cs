@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Newtonsoft.Json.Serialization;
 using System.ComponentModel.DataAnnotations;
-using System.Configuration;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace MedicalExaminations.Models
 {
@@ -30,6 +31,7 @@ namespace MedicalExaminations.Models
         public int? LocationId { get; set; }
 
         [ValidateNever]
+        [JsonIgnore]
         public Location? Location { get; set; }
 
         [Display(Name = "Улица")]
@@ -47,6 +49,7 @@ namespace MedicalExaminations.Models
         public int? OrganizationTypeId { get; set; }
 
         [ValidateNever]
+        [JsonIgnore]
         public OrganizationType? OrganizationType { get; set; }
 
         [Display(Name = "Форма организации")]
@@ -54,12 +57,25 @@ namespace MedicalExaminations.Models
         public int? OrganizationAttributeId { get; set; }
 
         [ValidateNever]
+        [JsonIgnore]
         public OrganizationAttribute? OrganizationAttribute { get; set; }
 
         [ValidateNever]
+        [JsonIgnore]
         public List<User> Users { get; set; }
 
         [ValidateNever]
+        [JsonIgnore]
         public List<MedicalExamination> MedicalExaminations { get; set; }
+
+        public string ToJson()
+        {
+            var options = new JsonSerializerOptions
+            {
+                WriteIndented = true
+            };
+
+            return JsonSerializer.Serialize(this, options);
+        }
     }
 }

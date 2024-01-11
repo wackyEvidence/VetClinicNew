@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace MedicalExaminations.Models
 {
@@ -29,6 +31,7 @@ namespace MedicalExaminations.Models
         public int ClientId { get; set; }
 
         [ValidateNever]
+        [JsonIgnore]
         public Organization? Client { get; set; }
 
         [Display(Name = "Исполнитель")]
@@ -36,15 +39,28 @@ namespace MedicalExaminations.Models
         public int ExecutorId { get; set; }
 
         [ValidateNever]
+        [JsonIgnore]
         public Organization? Executor { get; set; }
 
         [ValidateNever]
         public List<ContractLocation> ContractLocations { get; set; }
 
         [ValidateNever]
+        [JsonIgnore]
         public List<MedicalExamination> MedicalExaminations { get; set; }
 
         [NotMapped]
+        [JsonIgnore]
         public string Display { get { return $"№{Number} от {SigningDate}"; } }
+
+        public string ToJson()
+        {
+            var options = new JsonSerializerOptions
+            {
+                WriteIndented = true
+            };
+
+            return JsonSerializer.Serialize(this, options);
+        }
     }
 }
