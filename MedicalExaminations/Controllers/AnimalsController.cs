@@ -4,6 +4,8 @@ using MedicalExaminations.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using MedicalExaminations.Logging;
+using System.Diagnostics.Contracts;
 
 namespace MedicalExaminations.Controllers
 
@@ -11,10 +13,16 @@ namespace MedicalExaminations.Controllers
     public class AnimalsController : Controller
     {
         AppDbContext db;
+        private readonly ActionType createAction;
+        private readonly ActionType updateAction;
+        private readonly ActionType deleteAction;
 
         public AnimalsController(AppDbContext context)
         {
             db = context;
+            createAction = db.ActionTypes.Where(at => at.Name == "Create").First();
+            updateAction = db.ActionTypes.Where(at => at.Name == "Update").First();
+            deleteAction = db.ActionTypes.Where(at => at.Name == "Delete").First();
         }
 
         public async Task<IActionResult> Index()
@@ -72,6 +80,7 @@ namespace MedicalExaminations.Controllers
                 }
                 animal.OwnerSigns = OwnerSignsList;
             }
+            Logger.GetInstance().Log(db, createAction, animal.Id, animal.ToJson());
             await db.SaveChangesAsync();
             return RedirectToAction("Index");
         }
@@ -123,6 +132,7 @@ namespace MedicalExaminations.Controllers
             }
             animalUpdate.OwnerSigns = OwnerSignsList;
             db.Animals.Update(animalUpdate);
+            Logger.GetInstance().Log(db, updateAction, animalUpdate.Id, animalUpdate.ToJson());
             await db.SaveChangesAsync();
             return RedirectToAction("Index");
         }
@@ -136,6 +146,7 @@ namespace MedicalExaminations.Controllers
                 if (animal != null)
                 {
                     db.Animals.Remove(animal);
+                    Logger.GetInstance().Log(db, deleteAction, animal.Id);
                     await db.SaveChangesAsync();
                     return RedirectToAction("Index");
                 }

@@ -2,15 +2,6 @@
 
 @{
     ViewData["Title"] = "Журнал операций";
-
-    var actionTypeConvert = new Dictionary<string, string>()
-    {
-        { "Create", "Создание" }, 
-        { "Update", "Редактирование" }, 
-        { "Delete", "Удаление" },
-        { "Upload file", "Загрузка файла" }, 
-        { "Delete file", "Удаление файла" }
-    }; 
 }
 
 @section style {
@@ -47,9 +38,7 @@
             <thead>
                 <tr>
                     <th hidden>Id</th>
-                    <th>Фамилия</th>
-                    <th>Имя</th>
-                    <th>Отчество</th>
+                    <th>Логин</th>
                     <th>Тип действия</th>
                     <th>Дата и время</th>
                     <th>Идентификационный<br /> номер<br />экземпляра<br />объекта</th>
@@ -62,13 +51,12 @@
                 {
                     <tr>
                         <td hidden>@logEntry.Id</td>
-                        <td>@logEntry.User.Surname</td>
-                        <td>@logEntry.User.Name</td>
-                        <td>@logEntry.User.Patronymic</td>
-                        <td>@actionTypeConvert[logEntry.ActionType.Name]</td>
+                        <td>@logEntry.User.Login</td>
+                        <td>@logEntry.ActionType.Display</td>
                         <td>@logEntry.Timestamp</td>
                         <td>@logEntry.ObjectId</td>
-                        <td>@logEntry.FileId == null? "-" : logEntry.FileId</td>
+                        <td>@logEntry.ObjectAttributes</td>
+                        <td>@logEntry.FileIdDisplay</td>
                     </tr>
                 }
             </tbody>
@@ -103,7 +91,7 @@
             var id = Number(row.find("td").eq(0).html());
 
             if (Number.isInteger(id) && id != 0)
-                window.location.href = `/LogEntries/Edit/${id}`;
+                window.location.href = `/LogEntries/Details/${id}`;
         });
 
         $("#myTable tbody tr").click(function () {

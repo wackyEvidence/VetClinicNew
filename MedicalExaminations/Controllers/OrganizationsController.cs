@@ -4,15 +4,25 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using ClosedXML.Excel;
+using System.Diagnostics.Contracts;
+using MedicalExaminations.Logging;
+using DocumentFormat.OpenXml.Presentation;
 
 namespace MedicalExaminations.Controllers
 {
     public class OrganizationsController : Controller
     {
         AppDbContext db;
+        private readonly ActionType createAction;
+        private readonly ActionType updateAction;
+        private readonly ActionType deleteAction;
+
         public OrganizationsController(AppDbContext context)
         {
             db = context;
+            createAction = db.ActionTypes.Where(at => at.Name == "Create").First();
+            updateAction = db.ActionTypes.Where(at => at.Name == "Update").First();
+            deleteAction = db.ActionTypes.Where(at => at.Name == "Delete").First();
         }
 
         public IActionResult Index()
@@ -41,6 +51,7 @@ namespace MedicalExaminations.Controllers
         public async Task<IActionResult> Create(Organization organization)
         {
             db.Organizations.Add(organization);
+            Logger.GetInstance().Log(db, createAction, organization.Id, organization.ToJson());
             await db.SaveChangesAsync();
             return RedirectToAction("Index");
         }
@@ -63,6 +74,7 @@ namespace MedicalExaminations.Controllers
         public async Task<IActionResult> Edit(Organization organization)
         {
             db.Organizations.Update(organization);
+            Logger.GetInstance().Log(db, updateAction, organization.Id, organization.ToJson());
             await db.SaveChangesAsync();
             return RedirectToAction("Index");
         }
@@ -76,6 +88,7 @@ namespace MedicalExaminations.Controllers
                 if (organization != null)
                 {
                     db.Organizations.Remove(organization);
+                    Logger.GetInstance().Log(db, deleteAction, organization.Id);
                     await db.SaveChangesAsync();
                     return RedirectToAction("Index");
                 }
